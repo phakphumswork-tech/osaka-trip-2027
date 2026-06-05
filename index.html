@@ -242,112 +242,168 @@
       overflow-x: auto;
       padding-bottom: .5rem;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,168,76,.3) transparent;
     }
 
     .steps-track {
       display: flex;
-      align-items: flex-start;
-      min-width: 700px;
-      position: relative;
-      padding: 1rem 1rem 0;
+      align-items: center;
+      gap: .4rem;
+      min-width: 740px;
+      padding: 1.5rem .5rem 2rem;
     }
 
-    .step-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 90px;
+    /* ── CARD ── */
+    .step-card {
       flex-shrink: 0;
+      width: 106px;
+      border-radius: 18px;
+      padding: 1.1rem .65rem 1rem;
+      text-align: center;
       position: relative;
-    }
-
-    .step-circle {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.7rem;
-      border: 2px solid;
-      position: relative;
-      z-index: 1;
-      transition: all .4s ease;
+      transition: transform .4s ease, box-shadow .4s ease;
+      overflow: hidden;
       cursor: default;
     }
 
     /* DONE */
-    .step-item.done .step-circle {
-      background: linear-gradient(135deg, #b8960a, var(--gold));
-      border-color: var(--gold);
-      font-size: 0;   /* hide emoji */
-      box-shadow: 0 4px 16px rgba(201,168,76,.35);
-    }
-
-    .step-item.done .step-circle::after {
-      content: '✓';
-      font-size: 1.6rem;
-      color: #fff;
-      font-family: sans-serif;
-      font-weight: 700;
+    .step-card.done {
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.32);
     }
 
     /* CURRENT */
-    .step-item.current .step-circle {
-      background: linear-gradient(135deg, #c0392b, #8B1A1A);
-      border-color: #e74c3c;
-      animation: pulse-ring 2.2s ease-in-out infinite;
-      box-shadow: 0 0 0 6px rgba(192,57,43,.22), 0 4px 20px rgba(192,57,43,.45);
+    .step-card.current {
+      background: rgba(192,57,43,.16);
+      border: 2px solid rgba(231,76,60,.65);
+      transform: translateY(-7px) scale(1.05);
+      box-shadow: 0 12px 36px rgba(192,57,43,.45), 0 0 0 5px rgba(192,57,43,.1);
+      animation: float-card 3s ease-in-out infinite;
+      z-index: 2;
     }
 
-    @keyframes pulse-ring {
-      0%, 100% { box-shadow: 0 0 0 5px rgba(192,57,43,.2),  0 4px 20px rgba(192,57,43,.4); }
-      50%       { box-shadow: 0 0 0 10px rgba(192,57,43,.35), 0 4px 28px rgba(192,57,43,.6); }
+    @keyframes float-card {
+      0%,100% { transform: translateY(-7px) scale(1.05);  box-shadow: 0 12px 36px rgba(192,57,43,.45), 0 0 0 5px rgba(192,57,43,.1); }
+      50%      { transform: translateY(-12px) scale(1.05); box-shadow: 0 20px 50px rgba(192,57,43,.6),  0 0 0 7px rgba(192,57,43,.15); }
     }
 
     /* FUTURE */
-    .step-item.future .step-circle {
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.15);
-      filter: grayscale(1);
-      opacity: .45;
+    .step-card.future {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
     }
 
-    /* Connector line */
-    .step-connector {
-      flex: 1;
-      height: 2px;
-      margin-top: 29px;
-      border-radius: 2px;
-      transition: background .5s;
+    /* Pulsing live dot (current only) */
+    .live-dot {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #e74c3c;
+      display: none;
+      animation: blink-dot 1.5s ease-in-out infinite;
+    }
+    .step-card.current .live-dot { display: block; }
+
+    @keyframes blink-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .3; transform: scale(.55); }
     }
 
-    .step-connector.done    { background: linear-gradient(90deg, var(--gold), #a07a10); }
-    .step-connector.pending { background: rgba(255,255,255,.1); }
+    /* Emoji area */
+    .step-emoji-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: .55rem;
+    }
 
-    /* Step text */
+    .step-emoji {
+      font-size: 2.3rem;
+      display: block;
+      line-height: 1;
+      transition: filter .3s;
+    }
+
+    .step-card.future .step-emoji { filter: grayscale(1); opacity: .35; }
+
+    /* Gold ✓ badge (done only) */
+    .check-badge {
+      position: absolute;
+      bottom: -4px; right: -8px;
+      width: 20px; height: 20px;
+      background: var(--gold);
+      border-radius: 50%;
+      border: 2px solid #0e0e20;
+      align-items: center;
+      justify-content: center;
+      font-size: .62rem;
+      color: #fff;
+      font-weight: 900;
+      display: none;
+    }
+    .step-card.done .check-badge { display: flex; }
+
+    /* Step number label */
+    .step-num {
+      font-size: .55rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: .22rem;
+    }
+    .step-card.done    .step-num { color: rgba(201,168,76,.65); }
+    .step-card.current .step-num { color: rgba(231,76,60,.75); }
+    .step-card.future  .step-num { color: rgba(255,255,255,.2); }
+
+    /* Title */
     .step-title {
-      font-size: .72rem;
+      font-size: .73rem;
       font-weight: 700;
-      text-align: center;
-      margin-top: .65rem;
-      line-height: 1.35;
+      line-height: 1.3;
+      display: block;
     }
+    .step-card.done    .step-title { color: var(--gold); }
+    .step-card.current .step-title { color: #fff; }
+    .step-card.future  .step-title { color: rgba(255,255,255,.28); }
 
-    .step-item.done    .step-title { color: var(--gold); }
-    .step-item.current .step-title { color: #fff; }
-    .step-item.future  .step-title { color: rgba(255,255,255,.3); }
-
+    /* Sub */
     .step-sub {
       font-size: .6rem;
-      text-align: center;
-      margin-top: .2rem;
       line-height: 1.3;
+      display: block;
+      margin-top: .22rem;
+    }
+    .step-card.done    .step-sub { color: rgba(201,168,76,.5); }
+    .step-card.current .step-sub { color: rgba(255,255,255,.5); }
+    .step-card.future  .step-sub { color: rgba(255,255,255,.18); }
+
+    /* Bottom accent line */
+    .step-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 12%; right: 12%;
+      height: 3px;
+      border-radius: 2px 2px 0 0;
+    }
+    .step-card.done::after    { background: var(--gold); opacity: .6; }
+    .step-card.current::after { background: var(--red); animation: blink-line 1.5s ease infinite; }
+    .step-card.future::after  { background: rgba(255,255,255,.07); }
+
+    @keyframes blink-line {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .3; }
     }
 
-    .step-item.done    .step-sub { color: rgba(201,168,76,.6); }
-    .step-item.current .step-sub { color: rgba(255,255,255,.55); }
-    .step-item.future  .step-sub { color: rgba(255,255,255,.18); }
+    /* Arrow connector */
+    .step-arrow {
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color .3s;
+    }
+    .step-arrow.done    { color: rgba(201,168,76,.55); }
+    .step-arrow.pending { color: rgba(255,255,255,.1); }
 
     /* Current badge */
     .phase-badge {
@@ -947,58 +1003,93 @@
     <div class="steps-outer">
       <div class="steps-track">
 
-        <div class="step-item" id="step-1">
-          <div class="step-circle">🗺️</div>
-          <div class="step-title">ช่วงวางแผน</div>
-          <div class="step-sub">กำหนดรูต & แผนเที่ยว</div>
+        <div class="step-card" id="step-1">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🗺️</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 01</span>
+          <span class="step-title">ช่วงวางแผน</span>
+          <span class="step-sub">กำหนดรูต & แผนเที่ยว</span>
         </div>
 
-        <div class="step-connector" id="conn-1"></div>
+        <div class="step-arrow" id="conn-1">›</div>
 
-        <div class="step-item" id="step-2">
-          <div class="step-circle">🎫</div>
-          <div class="step-title">จองให้ครบ</div>
-          <div class="step-sub">โรงแรม USJ ทัวร์</div>
+        <div class="step-card" id="step-2">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🎫</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 02</span>
+          <span class="step-title">จองให้ครบ</span>
+          <span class="step-sub">โรงแรม USJ ทัวร์</span>
         </div>
 
-        <div class="step-connector" id="conn-2"></div>
+        <div class="step-arrow" id="conn-2">›</div>
 
-        <div class="step-item" id="step-3">
-          <div class="step-circle">🧳</div>
-          <div class="step-title">เตรียมกระเป๋า</div>
-          <div class="step-sub">ซื้อของ แพ็คของ เช็คลิสต์</div>
+        <div class="step-card" id="step-3">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🧳</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 03</span>
+          <span class="step-title">เตรียมกระเป๋า</span>
+          <span class="step-sub">ซื้อของ แพ็คของ เช็คลิสต์</span>
         </div>
 
-        <div class="step-connector" id="conn-3"></div>
+        <div class="step-arrow" id="conn-3">›</div>
 
-        <div class="step-item" id="step-4">
-          <div class="step-circle">🎉</div>
-          <div class="step-title">ใกล้แล้ว!</div>
-          <div class="step-sub">เหลือสัปดาห์สุดท้าย</div>
+        <div class="step-card" id="step-4">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🎉</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 04</span>
+          <span class="step-title">ใกล้แล้ว!</span>
+          <span class="step-sub">เหลือสัปดาห์สุดท้าย</span>
         </div>
 
-        <div class="step-connector" id="conn-4"></div>
+        <div class="step-arrow" id="conn-4">›</div>
 
-        <div class="step-item" id="step-5">
-          <div class="step-circle">✈️</div>
-          <div class="step-title">ออกเดินทาง!</div>
-          <div class="step-sub">18 Feb · BKK 20:00</div>
+        <div class="step-card" id="step-5">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">✈️</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 05</span>
+          <span class="step-title">ออกเดินทาง!</span>
+          <span class="step-sub">18 Feb · BKK 20:00</span>
         </div>
 
-        <div class="step-connector" id="conn-5"></div>
+        <div class="step-arrow" id="conn-5">›</div>
 
-        <div class="step-item" id="step-6">
-          <div class="step-circle">🏯</div>
-          <div class="step-title">เที่ยวโอซาก้า!</div>
-          <div class="step-sub">19–23 Feb 2027</div>
+        <div class="step-card" id="step-6">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🏯</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 06</span>
+          <span class="step-title">เที่ยวโอซาก้า!</span>
+          <span class="step-sub">19–23 Feb 2027</span>
         </div>
 
-        <div class="step-connector" id="conn-6"></div>
+        <div class="step-arrow" id="conn-6">›</div>
 
-        <div class="step-item" id="step-7">
-          <div class="step-circle">🏠</div>
-          <div class="step-title">กลับบ้านแล้ว</div>
-          <div class="step-sub">ความทรงจำไม่รู้ลืม</div>
+        <div class="step-card" id="step-7">
+          <div class="live-dot"></div>
+          <div class="step-emoji-wrap">
+            <span class="step-emoji">🏠</span>
+            <span class="check-badge">✓</span>
+          </div>
+          <span class="step-num">Step 07</span>
+          <span class="step-title">กลับบ้านแล้ว</span>
+          <span class="step-sub">ความทรงจำไม่รู้ลืม</span>
         </div>
 
       </div>
