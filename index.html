@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Osaka Trip 2027 🇯🇵</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Playfair+Display:wght@400;700&family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red:    #C0392B;
+      --gold:   #C9A84C;
+      --cream:  #FAF6EE;
+      --dark:   #1A1A2E;
+      --text:   #3A3A3A;
+      --muted:  #888;
+      --card:   #FFFFFF;
+      --border: #E8E0D0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/47/Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 1;
+      background: linear-gradient(160deg, rgba(26,26,46,0.91) 0%, rgba(44,24,16,0.88) 50%, rgba(61,21,21,0.91) 100%);
+    }
+
+    .hero-jp, .hero h1, .hero-sub, .hero-dates { position: relative; z-index: 1; }
+    .scroll-hint { z-index: 1; }
+    .petal { z-index: 1; }
+
+    .petal {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: #FFB7C5;
+      border-radius: 50% 0 50% 0;
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+    .petal:nth-child(1)  { left:  5%; animation-duration: 9s;  animation-delay: 0s;   top:-10px; width:6px; height:6px; }
+    .petal:nth-child(2)  { left: 15%; animation-duration: 12s; animation-delay: 2s;   top:-10px; }
+    .petal:nth-child(3)  { left: 30%; animation-duration: 8s;  animation-delay: 4s;   top:-10px; width:5px; height:5px; }
+    .petal:nth-child(4)  { left: 45%; animation-duration: 11s; animation-delay: 1s;   top:-10px; width:7px; height:7px; }
+    .petal:nth-child(5)  { left: 60%; animation-duration: 10s; animation-delay: 3s;   top:-10px; }
+    .petal:nth-child(6)  { left: 75%; animation-duration: 13s; animation-delay: 0.5s; top:-10px; width:5px; height:5px; }
+    .petal:nth-child(7)  { left: 88%; animation-duration: 9s;  animation-delay: 5s;   top:-10px; width:6px; height:6px; }
+    .petal:nth-child(8)  { left: 50%; animation-duration: 14s; animation-delay: 2.5s; top:-10px; }
+    .petal:nth-child(9)  { left: 22%; animation-duration: 10s; animation-delay: 6s;   top:-10px; width:4px; height:4px; }
+    .petal:nth-child(10) { left: 93%; animation-duration: 11s; animation-delay: 1.5s; top:-10px; }
+
+    @keyframes fall {
+      0%   { transform: translateY(0)   rotate(0deg);   opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .hero-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--gold);
+      letter-spacing: .3em;
+      margin-bottom: 1.5rem;
+      opacity: .9;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 4px 30px rgba(0,0,0,.5);
+    }
+
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: rgba(255,255,255,.75);
+      letter-spacing: .05em;
+    }
+
+    .hero-dates {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(201,168,76,.4);
+      border-radius: 50px;
+      padding: .7rem 2rem;
+      color: #fff;
+      font-size: .95rem;
+      letter-spacing: .05em;
+    }
+
+    .hero-dates .dot { width:6px; height:6px; background:var(--gold); border-radius:50%; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.4);
+      font-size: .8rem;
+      letter-spacing: .15em;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ─── LAYOUT ─── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 5rem 0; }
+
+    .section-label {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: .5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--dark);
+      margin-bottom: 2.5rem;
+      line-height: 1.2;
+    }
+
+    .divider {
+      width: 50px; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      margin: .8rem 0 2.5rem;
+      border-radius: 2px;
+    }
+
+    /* ─── PHOTO BANNER ─── */
+    .photo-banner {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .photo-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 8%;
+    }
+
+    .banner-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: .9rem;
+      color: var(--gold);
+      letter-spacing: .3em;
+      display: block;
+      margin-bottom: .5rem;
+    }
+
+    .photo-banner-overlay h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+    }
+
+    .photo-banner-overlay p {
+      font-size: .9rem;
+      color: rgba(255,255,255,.65);
+      margin-top: .5rem;
+    }
+
+    @media (max-width: 600px) {
+      .photo-banner { background-attachment: scroll; height: 220px; }
+    }
+
+    /* ─── FLIGHTS ─── */
+    .flights-wrap {
+      background: linear-gradient(160deg, #111128 0%, #1e1030 100%);
+      padding: 5rem 0;
+    }
+
+    .flights-wrap .section-label { color: var(--gold); }
+    .flights-wrap .section-title { color: #fff; }
+    .flights-wrap .divider { background: linear-gradient(90deg, var(--gold), #8B6914); }
+
+    .tickets-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+    }
+
+    .ticket {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(201,168,76,.22);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .ticket-head {
+      padding: .85rem 1.4rem;
+      background: rgba(201,168,76,.07);
+      border-bottom: 1px solid rgba(201,168,76,.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .t-dir {
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .t-ttl { font-size: .68rem; color: rgba(255,255,255,.35); }
+
+    .ticket-body { padding: 1.2rem 1.4rem; }
+
+    .t-leg {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .t-city { text-align: center; flex-shrink: 0; width: 52px; }
+
+    .t-city .iata {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .t-city .t-time {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-top: .12rem;
+    }
+
+    .t-city .t-date {
+      font-size: .58rem;
+      color: rgba(255,255,255,.3);
+      line-height: 1.4;
+    }
+
+    .t-mid { flex: 1; text-align: center; }
+
+    .t-fnum { font-size: .65rem; color: rgba(255,255,255,.45); margin-bottom: .22rem; }
+
+    .t-bar {
+      position: relative;
+      height: 1px;
+      background: rgba(255,255,255,.12);
+      margin: .18rem 0;
+    }
+
+    .t-bar::before, .t-bar::after {
+      content: '';
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .t-bar::before { left: 0; }
+    .t-bar::after  { right: 0; }
+
+    .t-plane {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: .8rem;
+    }
+
+    .t-dur   { font-size: .6rem; color: rgba(255,255,255,.28); }
+    .t-craft { font-size: .6rem; color: rgba(255,255,255,.2); margin-top: .08rem; }
+
+    .t-layover {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding: .45rem;
+      margin: .75rem 0;
+      background: rgba(255,255,255,.03);
+      border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 8px;
+      font-size: .66rem;
+      color: rgba(255,255,255,.38);
+    }
+
+    /* ─── OVERVIEW CARDS ─── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .ov-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .ov-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+
+    .ov-icon { font-size: 2rem; margin-bottom: .6rem; display: block; }
+    .ov-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .ov-value { font-size: 1rem; font-weight: 700; color: var(--dark); margin-top: .2rem; }
+
+    /* ─── GALLERY ─── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 215px 215px;
+      gap: .9rem;
+    }
+
+    .g-item {
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      cursor: default;
+    }
+
+    .g-item.span-2 { grid-row: span 2; }
+
+    .g-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform .5s ease;
+    }
+
+    .g-item:hover .g-bg { transform: scale(1.07); }
+
+    .g-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      font-size: 4.5rem;
+      opacity: .14;
+      pointer-events: none;
+      transition: opacity .4s, transform .4s;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.5));
+    }
+
+    .g-item.span-2 .g-icon { font-size: 7rem; }
+
+    .g-item:hover .g-icon { opacity: .22; transform: translate(-50%, -50%); }
+
+    .g-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.05) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1rem 1.1rem;
+    }
+
+    .g-tag {
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .2rem;
+    }
+
+    .g-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .g-item.span-2 .g-name { font-size: 1.35rem; }
+
+    .g-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: .68rem;
+      color: rgba(255,255,255,.5);
+      margin-top: .15rem;
+    }
+
+    .g-desc {
+      font-size: .7rem;
+      color: rgba(255,255,255,.45);
+      margin-top: .3rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+
+    .g-item:hover .g-desc { max-height: 3rem; }
+
+    /* ─── TIMELINE ─── */
+    .timeline { position: relative; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 38px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--red), var(--gold), transparent);
+    }
+
+    .day-block {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .day-num {
+      flex-shrink: 0;
+      width: 78px; height: 78px;
+      background: var(--dark);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      position: relative;
+      z-index: 1;
+      border: 3px solid var(--gold);
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+
+    .day-num .d { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .day-num .m { font-size: .6rem; letter-spacing: .1em; color: var(--gold); }
+
+    .day-content {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: .5rem;
+    }
+
+    .day-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--dark);
+      margin-bottom: .3rem;
+    }
+
+    .day-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--red), #8B1A1A);
+      color: #fff;
+      font-size: .7rem;
+      padding: .2rem .7rem;
+      border-radius: 20px;
+      margin-bottom: .8rem;
+      letter-spacing: .08em;
+    }
+
+    .activities { list-style: none; margin-top: .8rem; }
+
+    .activities li {
+      padding: .4rem 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: .93rem;
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+      color: var(--text);
+    }
+
+    .activities li:last-child { border-bottom: none; }
+    .activities li .act-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+
+    .tbd {
+      font-style: italic;
+      color: var(--muted);
+      font-size: .85rem;
+      margin-top: .6rem;
+    }
+
+    /* ─── BUDGET ─── */
+    .budget-table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+
+    .budget-table th {
+      background: var(--dark);
+      color: var(--gold);
+      padding: .8rem 1.2rem;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: .05em;
+    }
+
+    .budget-table th:first-child { border-radius: 10px 0 0 0; }
+    .budget-table th:last-child  { border-radius: 0 10px 0 0; text-align: right; }
+
+    .budget-table td { padding: .75rem 1.2rem; border-bottom: 1px solid var(--border); }
+    .budget-table td:last-child { text-align: right; font-weight: 600; color: var(--red); }
+    .budget-table tr:nth-child(even) td { background: #F9F5EE; }
+
+    .budget-table tfoot td { background: var(--dark); color: #fff; font-weight: 700; font-size: 1rem; }
+    .budget-table tfoot td:last-child { color: var(--gold); font-size: 1.1rem; }
+
+    /* ─── TIPS ─── */
+    .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+
+    .tip-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border-top: 4px solid var(--gold);
+      transition: transform .2s;
+    }
+
+    .tip-card:hover { transform: translateY(-3px); }
+    .tip-card h4 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: .5rem; }
+    .tip-card p  { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── USJ DAY PLAN ─── */
+    .usj-plan { margin-top: 1.2rem; }
+
+    .usj-row {
+      display: flex;
+      gap: .8rem;
+      align-items: flex-start;
+      padding: .55rem .4rem;
+      border-bottom: 1px dashed var(--border);
+      border-radius: 6px;
+    }
+
+    .usj-row:last-child { border-bottom: none; }
+
+    .usj-row.hp {
+      background: linear-gradient(90deg, rgba(74,20,140,.06) 0%, transparent 100%);
+      border-bottom: 1px dashed rgba(100,40,180,.15);
+    }
+
+    .u-time {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 40px;
+      margin-top: .15rem;
+      font-family: monospace;
+      letter-spacing: .03em;
+    }
+
+    .usj-row.hp .u-time { color: #6a1b9a; }
+
+    .u-icon { font-size: 1rem; flex-shrink: 0; margin-top: .05rem; }
+
+    .u-label {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.35;
+    }
+
+    .usj-row.hp .u-label { color: #4a148c; }
+
+    .u-note {
+      font-size: .76rem;
+      color: var(--muted);
+      margin-top: .08rem;
+      line-height: 1.4;
+    }
+
+    .hp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .6rem;
+      margin-top: 1rem;
+    }
+
+    .hp-card {
+      background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 100%);
+      border-radius: 12px;
+      padding: .9rem 1rem;
+      border: 1px solid rgba(180,100,255,.2);
+    }
+
+    .hp-card h5 {
+      font-size: .8rem;
+      color: #d4b3ff;
+      font-weight: 700;
+      margin-bottom: .25rem;
+    }
+
+    .hp-card p { font-size: .73rem; color: rgba(255,255,255,.5); line-height: 1.45; }
+
+    .tip-badge {
+      display: flex;
+      align-items: flex-start;
+      gap: .4rem;
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-left: 4px solid #f9a825;
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      font-size: .8rem;
+      color: #6d4c00;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 500px) {
+      .hp-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      font-size: .85rem;
+    }
+
+    footer .jp { font-family: 'Noto Serif JP', serif; font-size: 1.5rem; color: var(--gold); display: block; margin-bottom: .5rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 650px) {
+      .tickets-row { grid-template-columns: 1fr; }
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 160px 160px 160px;
+      }
+      .g-item.span-2 { grid-row: span 1; grid-column: span 2; }
+      .timeline::before { left: 30px; }
+      .day-num { width: 62px; height: 62px; }
+      .day-num .d { font-size: 1.2rem; }
+      .day-block { gap: 1rem; }
+      .budget-table { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-pattern"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+
+  <p class="hero-jp">大阪 · 日本 · 旅行計画</p>
+  <h1>Osaka<br /><span>Winter Trip</span></h1>
+  <p class="hero-sub">ลุยโอซาก้าฤดูหนาว — กินเที่ยวเต็ม 6 วัน</p>
+  <div class="hero-dates">
+    <span class="dot"></span>
+    18 February 2027
+    <span>—</span>
+    23 February 2027
+    <span class="dot"></span>
+  </div>
+  <p class="scroll-hint">▼ SCROLL</p>
+</section>
+
+<!-- ─── FLIGHTS ─── -->
+<div class="flights-wrap">
+  <div class="container">
+    <p class="section-label">Flights · Singapore Airlines</p>
+    <h2 class="section-title">ตั๋วเครื่องบิน</h2>
+    <div class="divider"></div>
+
+    <div class="tickets-row">
+
+      <!-- OUTBOUND -->
+      <div class="ticket">
+        <div class="ticket-head">
+          <span class="t-dir">✈ Depart · 18 Feb 2027 (Thu)</span>
+          <span class="t-ttl">Total 10h 35m</span>
+        </div>
+        <div class="ticket-body">
+          <!-- Leg 1: BKK → SIN -->
+          <div class="t-leg">
+            <div class="t-city">
+              <div class="iata">BKK</div>
+              <div class="t-time">20:00</div>
+              <div class="t-date">18 Feb<br/>Suvarnabhumi</div>
+            </div>
+            <div class="t-mid">
+              <div class="t-fnum">SQ 713</div>
+              <div class="t-bar"><span class="t-plane">✈</span></div>
+              <div class="t-dur">2h 30m</div>
+              <div class="t-craft">Boeing 787-10 · Economy (K)</div>
+            </div>
+            <div class="t-city">
+              <div class="iata">SIN</div>
+              <div class="t-time">23:30</div>
+              <div class="t-date">18 Feb<br/>Changi</div>
+            </div>
+          </div>
+
+          <!-- Layover -->
+          <div class="t-layover">⏱ Layover 2 hrs · Singapore Changi</div>
+
+          <!-- Leg 2: SIN → KIX -->
+          <div class="t-leg">
+            <div class="t-city">
+              <div class="iata">SIN</div>
+              <div class="t-time">01:30</div>
+              <div class="t-date">19 Feb<br/>Changi T2</div>
+            </div>
+            <div class="t-mid">
+              <div class="t-fnum">SQ 618</div>
+              <div class="t-bar"><span class="t-plane">✈</span></div>
+              <div class="t-dur">6h 05m</div>
+              <div class="t-craft">Boeing 787-10 · Economy (K)</div>
+            </div>
+            <div class="t-city">
+              <div class="iata">KIX</div>
+              <div class="t-time">08:35</div>
+              <div class="t-date">19 Feb<br/>Kansai T1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RETURN -->
+      <div class="ticket">
+        <div class="ticket-head">
+          <span class="t-dir">✈ Return · 23 Feb 2027 (Tue)</span>
+          <span class="t-ttl">Total 11h 05m</span>
+        </div>
+        <div class="ticket-body">
+          <!-- Leg 1: KIX → SIN -->
+          <div class="t-leg">
+            <div class="t-city">
+              <div class="iata">KIX</div>
+              <div class="t-time">23:20</div>
+              <div class="t-date">23 Feb<br/>Kansai T1</div>
+            </div>
+            <div class="t-mid">
+              <div class="t-fnum">SQ 623</div>
+              <div class="t-bar"><span class="t-plane">✈</span></div>
+              <div class="t-dur">6h 40m</div>
+              <div class="t-craft">Boeing 787-10 · Economy (K)</div>
+            </div>
+            <div class="t-city">
+              <div class="iata">SIN</div>
+              <div class="t-time">05:00</div>
+              <div class="t-date">24 Feb<br/>Changi</div>
+            </div>
+          </div>
+
+          <!-- Layover -->
+          <div class="t-layover">⏱ Layover 2 hrs · Singapore Changi</div>
+
+          <!-- Leg 2: SIN → BKK -->
+          <div class="t-leg">
+            <div class="t-city">
+              <div class="iata">SIN</div>
+              <div class="t-time">07:00</div>
+              <div class="t-date">24 Feb<br/>Changi T2</div>
+            </div>
+            <div class="t-mid">
+              <div class="t-fnum">SQ 706</div>
+              <div class="t-bar"><span class="t-plane">✈</span></div>
+              <div class="t-dur">2h 25m</div>
+              <div class="t-craft">Airbus A350-900 · Economy (K)</div>
+            </div>
+            <div class="t-city">
+              <div class="iata">BKK</div>
+              <div class="t-time">08:25</div>
+              <div class="t-date">24 Feb<br/>Suvarnabhumi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tickets-row -->
+  </div>
+</div>
+
+<!-- ─── OVERVIEW ─── -->
+<section>
+  <div class="container">
+    <p class="section-label">Overview</p>
+    <h2 class="section-title">ภาพรวมทริป</h2>
+    <div class="divider"></div>
+
+    <div class="overview-grid">
+      <div class="ov-card">
+        <span class="ov-icon">✈️</span>
+        <p class="ov-label">จำนวนวัน</p>
+        <p class="ov-value">6 วัน 5 คืน</p>
+      </div>
+      <div class="ov-card">
+        <span class="ov-icon">📍</span>
+        <p class="ov-label">จุดหมาย</p>
+        <p class="ov-value">Osaka, Japan</p>
+      </div>
+      <div class="ov-card">
+        <span class="ov-icon">🛫</span>
+        <p class="ov-label">สายการบิน</p>
+        <p class="ov-value">Singapore Airlines</p>
+      </div>
+      <div class="ov-card">
+        <span class="ov-icon">🌡️</span>
+        <p class="ov-label">อุณหภูมิเฉลี่ย</p>
+        <p class="ov-value">4–10°C</p>
+      </div>
+      <div class="ov-card">
+        <span class="ov-icon">💴</span>
+        <p class="ov-label">สกุลเงิน</p>
+        <p class="ov-value">JPY (¥)</p>
+      </div>
+      <div class="ov-card">
+        <span class="ov-icon">👥</span>
+        <p class="ov-label">จำนวนคน</p>
+        <p class="ov-value">— คน</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHOTO BANNER: OSAKA CASTLE ─── -->
+<div class="photo-banner" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/ab/Osaka_Castle_and_pond.jpg');">
+  <div class="photo-banner-overlay">
+    <span class="banner-jp">大阪城</span>
+    <h2>Osaka Castle</h2>
+    <p>สัญลักษณ์ของเมืองโอซาก้า · สร้างในปี ค.ศ. 1583 โดย Toyotomi Hideyoshi</p>
+  </div>
+</div>
+
+<!-- ─── GALLERY ─── -->
+<section style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+  <div class="container">
+    <p class="section-label">Highlights</p>
+    <h2 class="section-title">สถานที่น่าไป</h2>
+    <div class="divider"></div>
+
+    <div class="gallery-grid">
+
+      <!-- Osaka Castle — BIG -->
+      <div class="g-item span-2">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/ab/Osaka_Castle_and_pond.jpg'); background-color: #0c2b1a; background-size: cover; background-position: center;"></div>
+        <div class="g-icon">🏯</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 4 · Landmark</div>
+          <div class="g-name">Osaka Castle</div>
+          <div class="g-jp">大阪城</div>
+          <div class="g-desc">ปราสาทสัญลักษณ์ของเมือง สร้างในปี 1583 ล้อมรอบด้วยสวนสีเขียว</div>
+        </div>
+      </div>
+
+      <!-- USJ -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/7f/Universal_Japan.JPG'); background-color: #0a0e2a; background-size: cover; background-position: center;"></div>
+        <div class="g-icon">🎡</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 5 · Theme Park</div>
+          <div class="g-name">Universal Studios Japan</div>
+          <div class="g-jp">ユニバーサル・スタジオ</div>
+          <div class="g-desc">Harry Potter, Nintendo World, Minions และอีกมาก!</div>
+        </div>
+      </div>
+
+      <!-- Dotonbori -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/47/Dotonbori%2C_Osaka%2C_at_night%2C_November_2016.jpg'); background-color: #1a0000; background-size: cover; background-position: center top;"></div>
+        <div class="g-icon">🦀</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 2 · Food & Nightlife</div>
+          <div class="g-name">Dotonbori</div>
+          <div class="g-jp">道頓堀</div>
+          <div class="g-desc">ย่านกินดื่ม ป้ายนีออนวิ้ง มีชื่อเสียงระดับโลก</div>
+        </div>
+      </div>
+
+      <!-- Fushimi Inari -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a2/Double_torii_path_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg'); background-color: #3d0800; background-size: cover; background-position: center;"></div>
+        <div class="g-icon">⛩️</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 3 · Kyoto</div>
+          <div class="g-name">Fushimi Inari</div>
+          <div class="g-jp">伏見稲荷大社</div>
+          <div class="g-desc">เส้นทางประตูโทริอิสีแดงหลายพันต้น</div>
+        </div>
+      </div>
+
+      <!-- Umeda Sky Building -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f9/2018_Umeda_Sky_Building.jpg'); background-color: #060d24; background-size: cover; background-position: center;"></div>
+        <div class="g-icon">🌃</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 4 · Night View</div>
+          <div class="g-name">Umeda Sky Building</div>
+          <div class="g-jp">梅田スカイビル</div>
+          <div class="g-desc">จุดชมวิว 360° กลางคืน เห็นทั้งเมืองโอซาก้า</div>
+        </div>
+      </div>
+
+      <!-- Nara Deer Park -->
+      <div class="g-item">
+        <div class="g-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/2f/Nara%2C_deers_01.JPG'); background-color: #1a2e0a; background-size: cover; background-position: center;"></div>
+        <div class="g-icon">🦌</div>
+        <div class="g-overlay">
+          <div class="g-tag">Day 3 · Nara</div>
+          <div class="g-name">Nara Deer Park</div>
+          <div class="g-jp">奈良公園</div>
+          <div class="g-desc">ให้อาหารกวางน้อยสุดน่ารัก กว่า 1,000 ตัวใจกลางเมือง</div>
+        </div>
+      </div>
+
+    </div><!-- /gallery-grid -->
+  </div>
+</section>
+
+<!-- ─── PHOTO BANNER: FUSHIMI INARI ─── -->
+<div class="photo-banner" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a2/Double_torii_path_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg'); background-position: center 30%;">
+  <div class="photo-banner-overlay">
+    <span class="banner-jp">伏見稲荷大社</span>
+    <h2>Fushimi Inari</h2>
+    <p>เส้นทางประตูโทริอิสีแดงกว่า 10,000 ต้น · เกียวโต ห่างจากโอซาก้า 30 นาที</p>
+  </div>
+</div>
+
+<!-- ─── ITINERARY ─── -->
+<section>
+  <div class="container">
+    <p class="section-label">Itinerary</p>
+    <h2 class="section-title">แผนการเดินทางรายวัน</h2>
+    <div class="divider"></div>
+
+    <div class="timeline">
+
+      <!-- DAY 1 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">18</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 1 · วันออกเดินทาง (พฤหัส)</div>
+          <h3>กรุงเทพฯ → สิงคโปร์ (Transit)</h3>
+          <ul class="activities">
+            <li><span class="act-icon">✈️</span> SQ 713 · BKK 20:00 ออกเดินทาง → SIN 23:30</li>
+            <li><span class="act-icon">⏱️</span> แวะ Changi Airport, Singapore 2 ชั่วโมง</li>
+            <li><span class="act-icon">🌙</span> SQ 618 · SIN 01:30 ขึ้นเครื่องไป Osaka</li>
+            <li><span class="act-icon">💺</span> พักผ่อนบนเครื่อง — ถึง KIX เช้าวันถัดไป</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">19</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 2 · วันแรกในโอซาก้า (ศุกร์)</div>
+          <h3>ถึง KIX 08:35 → Dotonbori · Namba</h3>
+          <ul class="activities">
+            <li><span class="act-icon">🛬</span> SQ 618 ลง KIX 08:35 · ผ่านด่าน Immigration</li>
+            <li><span class="act-icon">🚆</span> นั่ง Haruka Express หรือ Airport Limousine Bus เข้าเมือง</li>
+            <li><span class="act-icon">🏨</span> Check-in โรงแรม · วางกระเป๋า</li>
+            <li><span class="act-icon">🦀</span> เดิน Dotonbori — ถ่ายรูป Glico Man · กิน Takoyaki</li>
+            <li><span class="act-icon">🛍️</span> ช้อปปิ้ง Shinsaibashi · ชิมอาหารย่าน Namba</li>
+          </ul>
+          <p class="tbd">✏️ ยังไม่ได้จอง: โรงแรม</p>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">20</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 3 · Day Trip (เสาร์)</div>
+          <h3>Kyoto หรือ Nara — รอยัดแผน</h3>
+          <ul class="activities">
+            <li><span class="act-icon">🚅</span> นั่ง JR หรือ Kintetsu ออกไปต่างเมือง</li>
+            <li><span class="act-icon">⛩️</span> Fushimi Inari (Kyoto) — เส้นทางโทริอิสีแดงพันต้น</li>
+            <li><span class="act-icon">🦌</span> หรือ Nara Deer Park — ให้อาหารกวางน้อย!</li>
+            <li><span class="act-icon">🍵</span> ชิม Matcha ของแท้จาก Kyoto · ของฝากจำพวก</li>
+          </ul>
+          <p class="tbd">✏️ เลือกระหว่าง Kyoto / Nara / Kobe</p>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">21</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 4 · ประวัติศาสตร์ + กลางคืน (อาทิตย์)</div>
+          <h3>Osaka Castle · Kuromon · Umeda</h3>
+          <ul class="activities">
+            <li><span class="act-icon">🏯</span> Osaka Castle Park — ถ่ายรูปสวยมากในช่วงเช้า</li>
+            <li><span class="act-icon">🐟</span> Kuromon Ichiba Market — กุ้ง ปู ปลาสดราคาดี</li>
+            <li><span class="act-icon">🎮</span> Den Den Town — สวรรค์สายอนิเมะ · ของสะสม</li>
+            <li><span class="act-icon">🌃</span> ชมวิวกลางคืนจาก Umeda Sky Building (Top)</li>
+          </ul>
+          <p class="tbd">✏️ ตั๋วปราสาท ¥600 · เวลาเปิด 09:00–17:00</p>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">22</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 5 · Universal Studios Japan (จันทร์)</div>
+          <h3>The Wizarding World of Harry Potter ⚡</h3>
+
+          <!-- HP Zone Highlights -->
+          <div class="hp-grid">
+            <div class="hp-card">
+              <h5>⚡ Harry Potter and the Forbidden Journey</h5>
+              <p>Indoor dark ride สุดอลัง บินไปกับ HP ผ่านปราสาท Hogwarts — คิวยาวที่สุดในสวน ควรไปตอนเช้า</p>
+            </div>
+            <div class="hp-card">
+              <h5>🦅 Flight of the Hippogriff</h5>
+              <p>Roller coaster กลางแจ้ง บินผ่านหน้าปราสาท Hogwarts วิวสวยมาก เหมาะทุกวัย</p>
+            </div>
+            <div class="hp-card">
+              <h5>🍺 Butterbeer</h5>
+              <p>ต้องชิม! กุมภาพันธ์หนาว แนะนำ Hot Butterbeer หอมหวานกันหนาวได้ดีมาก</p>
+            </div>
+            <div class="hp-card">
+              <h5>🪄 Ollivanders Wand Shop</h5>
+              <p>ดู show เลือกไม้กายสิทธิ์ + ซื้อ Interactive Wand ¥4,500 แล้วทำ Spell รอบ Hogsmeade</p>
+            </div>
+          </div>
+
+          <!-- Timetable -->
+          <div class="usj-plan">
+            <div class="usj-row">
+              <span class="u-time">08:30</span>
+              <span class="u-icon">🚆</span>
+              <div>
+                <div class="u-label">ออกจากโรงแรม มุ่งหน้า USJ</div>
+                <div class="u-note">JR Yumesaki Line → Universal City Station ใช้เวลาแค่ 5 นาที</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">09:00</span>
+              <span class="u-icon">🎡</span>
+              <div>
+                <div class="u-label">ประตูเปิด! — วิ่งตรงไป Harry Potter Zone ทันที</div>
+                <div class="u-note">อย่าแวะ Zone อื่นก่อน เพราะคิว HP จะยาวมากหลัง 10 โมง</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">09:10</span>
+              <span class="u-icon">🏰</span>
+              <div>
+                <div class="u-label">Harry Potter and the Forbidden Journey</div>
+                <div class="u-note">เดินผ่านห้องต่างๆ ใน Hogwarts Castle ก่อนขึ้น ride — รายละเอียดสวยมาก</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">10:30</span>
+              <span class="u-icon">🦅</span>
+              <div>
+                <div class="u-label">Flight of the Hippogriff</div>
+                <div class="u-note">Roller coaster สั้นๆ แต่ fun มาก ถ่ายรูปกับปราสาทระหว่างรอคิว</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">11:15</span>
+              <span class="u-icon">🪄</span>
+              <div>
+                <div class="u-label">Ollivanders Wand Show + ซื้อ Interactive Wand</div>
+                <div class="u-note">Show รอบละ ~20 คน ดูก่อน แล้วค่อยซื้อ Wand ทำ Spell ตาม map รอบ Hogsmeade ได้เลย</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">12:15</span>
+              <span class="u-icon">🍺</span>
+              <div>
+                <div class="u-label">มื้อกลางวัน · Three Broomsticks + Butterbeer</div>
+                <div class="u-note">สั่ง Hot Butterbeer กันหนาว + Fish &amp; Chips / Great Feast แบบ HP</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">13:30</span>
+              <span class="u-icon">🛍️</span>
+              <div>
+                <div class="u-label">ช้อปของที่ระลึก Harry Potter</div>
+                <div class="u-note">Honeydukes (ลูกอม) · Dervish &amp; Banges (เสื้อผ้า) · Hogwarts Robe ¥15,000+</div>
+              </div>
+            </div>
+            <div class="usj-row">
+              <span class="u-time">14:30</span>
+              <span class="u-icon">🍄</span>
+              <div>
+                <div class="u-label">Super Nintendo World</div>
+                <div class="u-note">ซื้อ Power-Up Band · Mario Kart: Koopa's Challenge · Donkey Kong Country</div>
+              </div>
+            </div>
+            <div class="usj-row">
+              <span class="u-time">16:30</span>
+              <span class="u-icon">🎢</span>
+              <div>
+                <div class="u-label">Hollywood Dream: The Ride + Rides อื่นๆ</div>
+                <div class="u-note">ช่วงบ่ายคิวสั้นลง · หรือกลับไปเล่น Forbidden Journey รอบสอง!</div>
+              </div>
+            </div>
+            <div class="usj-row hp">
+              <span class="u-time">18:00</span>
+              <span class="u-icon">✨</span>
+              <div>
+                <div class="u-label">Hogsmeade ยามค่ำคืน — ไฟประดับปราสาท Hogwarts</div>
+                <div class="u-note">สวยที่สุดช่วงหลัง 18:00 · ถ่ายรูปปราสาทไฟประดับ · ดื่ม Butterbeer อีกแก้ว</div>
+              </div>
+            </div>
+            <div class="usj-row">
+              <span class="u-time">19:30</span>
+              <span class="u-icon">🚆</span>
+              <div>
+                <div class="u-label">เดินทางกลับโรงแรม</div>
+                <div class="u-note">JR กลับ Osaka · แวะกิน Ramen ร้อนๆ ก่อนนอนได้เลย</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tip-badge">
+            💡 <span><strong>แนะนำ USJ Express Pass 4</strong> — รวม Forbidden Journey, Hollywood Dream, Nintendo World และอีก 1 ride ประหยัดเวลาคิวได้ 2–3 ชั่วโมง ซื้อล่วงหน้าออนไลน์ก่อนมาญี่ปุ่น!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 6 -->
+      <div class="day-block">
+        <div class="day-num"><span class="d">23</span><span class="m">FEB</span></div>
+        <div class="day-content">
+          <div class="day-tag">Day 6 · วันสุดท้าย + กลับบ้าน (อังคาร)</div>
+          <h3>Shinsekai · ช้อปสุดท้าย → KIX 23:20</h3>
+          <ul class="activities">
+            <li><span class="act-icon">🌅</span> เช้า — เดิน Shinsekai ย่านย้อนยุค · กิน Kushikatsu</li>
+            <li><span class="act-icon">🛒</span> ช้อปของฝากสุดท้าย Shinsaibashi / Don Quijote</li>
+            <li><span class="act-icon">🧳</span> Check-out โรงแรม · ฝากกระเป๋าที่ Front Desk</li>
+            <li><span class="act-icon">🚌</span> มุ่งหน้า KIX เผื่อเวลา 3 ชม. ก่อน flight</li>
+            <li><span class="act-icon">✈️</span> SQ 623 · KIX 23:20 → SIN → BKK (ถึง 24 Feb 08:25)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+  </div>
+</section>
+
+<!-- ─── PHOTO BANNER: NARA ─── -->
+<div class="photo-banner" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/2f/Nara%2C_deers_01.JPG'); background-position: center 40%;">
+  <div class="photo-banner-overlay">
+    <span class="banner-jp">奈良公園</span>
+    <h2>Nara Deer Park</h2>
+    <p>กวางน้อยกว่า 1,000 ตัว เดินอิสระในสวนสาธารณะ · Daytrip จากโอซาก้า 40 นาที</p>
+  </div>
+</div>
+
+<!-- ─── BUDGET ─── -->
+<section style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+  <div class="container">
+    <p class="section-label">Budget</p>
+    <h2 class="section-title">ประมาณการค่าใช้จ่าย</h2>
+    <div class="divider"></div>
+
+    <div style="overflow-x:auto; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.08);">
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>หมวด</th>
+            <th>รายละเอียด</th>
+            <th>ประมาณ (บาท)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>✈️ ตั๋วเครื่องบิน</td>
+            <td>SQ713+SQ618 ไป / SQ623+SQ706 กลับ · Economy (K)</td>
+            <td>17,470 บาท</td>
+          </tr>
+          <tr>
+            <td>🏨 โรงแรม</td>
+            <td>5 คืน (19–23 Feb, ยังไม่ได้จอง)</td>
+            <td>— บาท</td>
+          </tr>
+          <tr>
+            <td>🚆 ขนส่งในญี่ปุ่น</td>
+            <td>ICOCA Card · Haruka Express · Day Trips</td>
+            <td>— บาท</td>
+          </tr>
+          <tr>
+            <td>🍱 อาหาร</td>
+            <td>3 มื้อ/วัน × 5 วัน (ประมาณ ¥3,000/วัน)</td>
+            <td>— บาท</td>
+          </tr>
+          <tr>
+            <td>🎡 กิจกรรม</td>
+            <td>USJ · Osaka Castle ¥600 · Umeda Sky ¥1,500</td>
+            <td>— บาท</td>
+          </tr>
+          <tr>
+            <td>🛍️ Shopping</td>
+            <td>ของฝาก · เสื้อผ้า · Don Quijote</td>
+            <td>— บาท</td>
+          </tr>
+          <tr>
+            <td>📶 อื่นๆ</td>
+            <td>eSIM / Pocket WiFi · ประกันเดินทาง</td>
+            <td>— บาท</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><strong>รวมทั้งหมด (ประมาณ)</strong></td>
+            <td>— บาท</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p style="margin-top:1rem; font-size:.85rem; color:var(--muted);">* อัตราแลกเปลี่ยนโดยประมาณ ¥100 ≈ 24 บาท (กุมภาพันธ์ 2027 อาจแตกต่าง)</p>
+  </div>
+</section>
+
+<!-- ─── TIPS ─── -->
+<section>
+  <div class="container">
+    <p class="section-label">Tips</p>
+    <h2 class="section-title">สิ่งที่ต้องเตรียม</h2>
+    <div class="divider"></div>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>🧥 แต่งตัว</h4>
+        <p>กุมภาพันธ์ที่โอซาก้าหนาว 4–10°C เตรียมเสื้อ down jacket ถุงมือ หมวก และรองเท้ากันน้ำ</p>
+      </div>
+      <div class="tip-card">
+        <h4>💳 เงิน & การชำระ</h4>
+        <p>ญี่ปุ่นยังนิยมเงินสด ถอนที่ ATM ของ 7-Eleven หรือ Japan Post Bank ได้สะดวก</p>
+      </div>
+      <div class="tip-card">
+        <h4>📱 อินเทอร์เน็ต</h4>
+        <p>แนะนำ eSIM ซื้อล่วงหน้าก่อนออกเดินทาง หรือเช่า Pocket WiFi ที่ KIX — ใช้ Google Maps นำทาง Metro</p>
+      </div>
+      <div class="tip-card">
+        <h4>🎫 บัตรโดยสาร</h4>
+        <p>ซื้อ ICOCA (IC Card) สำหรับขึ้น Metro · Bus · JR ทั่วเมือง สะดวกกว่าซื้อตั๋วรายครั้งมาก</p>
+      </div>
+      <div class="tip-card">
+        <h4>🎢 จองล่วงหน้า</h4>
+        <p>ตั๋ว USJ และ Osaka Castle ควรจองออนไลน์ก่อน โดยเฉพาะช่วงวันหยุด อาจขายหมดเร็ว</p>
+      </div>
+      <div class="tip-card">
+        <h4>⛩️ มารยาท</h4>
+        <p>ไม่กินบนรถไฟ · ไม่ส่งเสียงดัง · ถอดรองเท้าเมื่อเข้าบางสถานที่ · แยกขยะด้วยนะ!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <span class="jp">大阪へようこそ！</span>
+  <p>Osaka Trip · 18–23 February 2027 · Singapore Airlines</p>
+  <p style="margin-top:.5rem; font-size:.78rem; opacity:.5;">Updated June 2026 · ยังอยู่ระหว่างวางแผน</p>
+</footer>
+
+</body>
+</html>
