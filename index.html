@@ -960,7 +960,7 @@
 <body>
 
 <!-- ─── HERO ─── -->
-<section class="hero">
+<section class="hero" id="sec-hero">
   <div class="hero-pattern"></div>
   <div class="petal"></div><div class="petal"></div><div class="petal"></div>
   <div class="petal"></div><div class="petal"></div><div class="petal"></div>
@@ -994,7 +994,7 @@
 </section>
 
 <!-- ─── JOURNEY STEPS ─── -->
-<section class="steps-section">
+<section class="steps-section" id="sec-steps">
   <div class="container">
     <p class="section-label">Progress</p>
     <h2 class="section-title">ตอนนี้อยู่ขั้นไหนแล้ว?</h2>
@@ -1109,7 +1109,7 @@
 </section>
 
 <!-- ─── FLIGHTS ─── -->
-<div class="flights-wrap">
+<div class="flights-wrap" id="sec-flights">
   <div class="container">
     <p class="section-label">Flights · Singapore Airlines</p>
     <h2 class="section-title">ตั๋วเครื่องบิน</h2>
@@ -1226,7 +1226,7 @@
 </div>
 
 <!-- ─── OVERVIEW ─── -->
-<section>
+<section id="sec-overview">
   <div class="container">
     <p class="section-label">Overview</p>
     <h2 class="section-title">ภาพรวมทริป</h2>
@@ -1277,7 +1277,7 @@
 </div>
 
 <!-- ─── GALLERY ─── -->
-<section style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+<section id="sec-gallery" style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
   <div class="container">
     <p class="section-label">Highlights</p>
     <h2 class="section-title">สถานที่น่าไป</h2>
@@ -1371,7 +1371,7 @@
 </div>
 
 <!-- ─── ITINERARY ─── -->
-<section>
+<section id="sec-itinerary">
   <div class="container">
     <p class="section-label">Itinerary</p>
     <h2 class="section-title">แผนการเดินทางรายวัน</h2>
@@ -1599,7 +1599,7 @@
 </div>
 
 <!-- ─── BUDGET ─── -->
-<section style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+<section id="sec-budget" style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
   <div class="container">
     <p class="section-label">Budget</p>
     <h2 class="section-title">ประมาณการค่าใช้จ่าย</h2>
@@ -1664,7 +1664,7 @@
 </section>
 
 <!-- ─── TIPS ─── -->
-<section>
+<section id="sec-tips">
   <div class="container">
     <p class="section-label">Tips</p>
     <h2 class="section-title">สิ่งที่ต้องเตรียม</h2>
@@ -1700,7 +1700,7 @@
 </section>
 
 <!-- ─── QR SHARE ─── -->
-<section style="background:#F2EDE5; padding: 4rem 0;">
+<section id="sec-share" style="background:#F2EDE5; padding: 4rem 0;">
   <div class="container">
     <div style="display:flex; align-items:center; gap:2.5rem; background:#fff; border:1px solid var(--border); border-radius:24px; padding:2rem 2.5rem; flex-wrap:wrap; box-shadow:0 4px 24px rgba(0,0,0,.07);">
 
@@ -1898,6 +1898,128 @@
     }
     document.body.removeChild(ta);
   }
+
+  /* ─── FLOATING NAV ─── */
+  (function(){
+    const NAV_ITEMS = [
+      { id:'sec-hero',      icon:'🏠', label:'หน้าแรก' },
+      { id:'sec-steps',     icon:'📍', label:'Progress' },
+      { id:'sec-flights',   icon:'✈️', label:'ตั๋วเครื่องบิน' },
+      { id:'sec-overview',  icon:'📋', label:'ภาพรวมทริป' },
+      { id:'sec-gallery',   icon:'🗼', label:'สถานที่น่าไป' },
+      { id:'sec-itinerary', icon:'🗓️', label:'แผนรายวัน' },
+      { id:'sec-budget',    icon:'💰', label:'งบประมาณ' },
+      { id:'sec-tips',      icon:'💡', label:'สิ่งที่ต้องเตรียม' },
+      { id:'sec-share',     icon:'📱', label:'แชร์เว็บ' },
+    ];
+
+    /* ── styles ── */
+    const style = document.createElement('style');
+    style.textContent = `
+      #fnav-wrap { position:fixed; bottom:1.6rem; right:1.4rem; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:.5rem; }
+      #fnav-btn {
+        width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
+        background:var(--dark); color:#fff; font-size:1.35rem; box-shadow:0 4px 18px rgba(0,0,0,.35);
+        display:flex; align-items:center; justify-content:center;
+        transition:transform .25s, background .25s;
+      }
+      #fnav-btn:hover { background:var(--red); transform:scale(1.08); }
+      #fnav-btn.open { background:var(--red); transform:rotate(45deg); }
+      #fnav-menu {
+        display:flex; flex-direction:column; gap:.3rem; align-items:flex-end;
+        overflow:hidden; max-height:0; opacity:0;
+        transition:max-height .35s cubic-bezier(.4,0,.2,1), opacity .25s;
+        pointer-events:none;
+      }
+      #fnav-menu.open { max-height:600px; opacity:1; pointer-events:auto; }
+      .fnav-item {
+        display:flex; align-items:center; gap:.55rem;
+        background:var(--dark); color:#fff;
+        border:none; border-radius:30px; padding:.42rem .85rem .42rem .7rem;
+        font-family:'Noto Sans Thai',sans-serif; font-size:.82rem; font-weight:600;
+        cursor:pointer; box-shadow:0 3px 12px rgba(0,0,0,.28);
+        white-space:nowrap; text-decoration:none;
+        transition:background .2s, transform .15s;
+        opacity:0; transform:translateX(20px);
+      }
+      #fnav-menu.open .fnav-item {
+        opacity:1; transform:translateX(0);
+      }
+      #fnav-menu.open .fnav-item:nth-child(1){ transition-delay:.04s }
+      #fnav-menu.open .fnav-item:nth-child(2){ transition-delay:.07s }
+      #fnav-menu.open .fnav-item:nth-child(3){ transition-delay:.10s }
+      #fnav-menu.open .fnav-item:nth-child(4){ transition-delay:.13s }
+      #fnav-menu.open .fnav-item:nth-child(5){ transition-delay:.16s }
+      #fnav-menu.open .fnav-item:nth-child(6){ transition-delay:.19s }
+      #fnav-menu.open .fnav-item:nth-child(7){ transition-delay:.22s }
+      #fnav-menu.open .fnav-item:nth-child(8){ transition-delay:.25s }
+      #fnav-menu.open .fnav-item:nth-child(9){ transition-delay:.28s }
+      .fnav-item:hover { background:var(--red); transform:translateX(-3px); }
+      .fnav-item .fi-icon { font-size:1rem; }
+      .fnav-item.active { background:var(--gold); color:var(--dark); }
+    `;
+    document.head.appendChild(style);
+
+    /* ── HTML ── */
+    const wrap = document.createElement('div');
+    wrap.id = 'fnav-wrap';
+
+    const menu = document.createElement('div');
+    menu.id = 'fnav-menu';
+    NAV_ITEMS.forEach(item => {
+      const a = document.createElement('a');
+      a.className = 'fnav-item';
+      a.href = '#' + item.id;
+      a.dataset.target = item.id;
+      a.innerHTML = `<span class="fi-icon">${item.icon}</span>${item.label}`;
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(item.id);
+        if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+        toggleMenu(false);
+      });
+      menu.appendChild(a);
+    });
+
+    const btn = document.createElement('button');
+    btn.id = 'fnav-btn';
+    btn.title = 'เมนู';
+    btn.innerHTML = '☰';
+    btn.addEventListener('click', () => toggleMenu());
+
+    wrap.appendChild(menu);
+    wrap.appendChild(btn);
+    document.body.appendChild(wrap);
+
+    /* ── toggle ── */
+    let isOpen = false;
+    function toggleMenu(force) {
+      isOpen = force !== undefined ? force : !isOpen;
+      menu.classList.toggle('open', isOpen);
+      btn.classList.toggle('open', isOpen);
+      btn.innerHTML = isOpen ? '+' : '☰';
+    }
+
+    /* ── close on outside click ── */
+    document.addEventListener('click', (e) => {
+      if (isOpen && !wrap.contains(e.target)) toggleMenu(false);
+    });
+
+    /* ── highlight active section ── */
+    const ids = NAV_ITEMS.map(n => n.id);
+    function onScroll() {
+      let current = ids[0];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 80) current = id;
+      });
+      menu.querySelectorAll('.fnav-item').forEach(a => {
+        a.classList.toggle('active', a.dataset.target === current);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  })();
 </script>
 </body>
 </html>
