@@ -1663,6 +1663,59 @@
   </div>
 </section>
 
+<!-- ─── MUSIC ─── -->
+<section id="sec-music" style="background: linear-gradient(160deg,#0e0e20 0%,#16112b 100%); padding:4.5rem 0;">
+  <div class="container">
+    <p class="section-label" style="color:var(--gold);">Vibes</p>
+    <h2 class="section-title" style="color:#fff;">เพลงบรรยากาศญี่ปุ่น 🎵</h2>
+    <div class="divider" style="background:linear-gradient(90deg,var(--gold),transparent);"></div>
+
+    <!-- Tab buttons -->
+    <div style="display:flex; gap:.75rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+      <button id="music-tab-lofi" onclick="switchPlaylist('lofi')"
+        style="border:2px solid var(--gold); background:var(--gold); color:var(--dark); border-radius:30px; padding:.45rem 1.2rem; font-family:'Noto Sans Thai',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer; transition:all .2s;">
+        🎵 Lofi Japan
+      </button>
+      <button id="music-tab-citypop" onclick="switchPlaylist('citypop')"
+        style="border:2px solid rgba(255,255,255,.3); background:transparent; color:rgba(255,255,255,.7); border-radius:30px; padding:.45rem 1.2rem; font-family:'Noto Sans Thai',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer; transition:all .2s;">
+        🏙️ City Pop 70s–80s
+      </button>
+    </div>
+
+    <!-- Player -->
+    <div style="border-radius:16px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,.5);">
+      <iframe id="spotify-player"
+        src="https://open.spotify.com/embed/playlist/5YKm5Zt0AUdKrlrvWzUV6l?utm_source=generator&theme=0"
+        width="100%" height="380" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        style="display:block;">
+      </iframe>
+    </div>
+
+    <p style="color:rgba(255,255,255,.35); font-size:.72rem; text-align:center; margin-top:.9rem;">
+      ต้องการฟังครบต้อง login Spotify · ฟังได้ฟรี (มีโฆษณาเล็กน้อย)
+    </p>
+  </div>
+</section>
+
+<script>
+  const PLAYLISTS = {
+    lofi:    'https://open.spotify.com/embed/playlist/5YKm5Zt0AUdKrlrvWzUV6l?utm_source=generator&theme=0',
+    citypop: 'https://open.spotify.com/embed/playlist/06NLSB8cCegBdlUuVs3w15?utm_source=generator&theme=0',
+  };
+  const TAB_ACTIVE   = { border:'2px solid var(--gold)', background:'var(--gold)', color:'var(--dark)' };
+  const TAB_INACTIVE = { border:'2px solid rgba(255,255,255,.3)', background:'transparent', color:'rgba(255,255,255,.7)' };
+  function switchPlaylist(key) {
+    document.getElementById('spotify-player').src = PLAYLISTS[key];
+    ['lofi','citypop'].forEach(k => {
+      const btn = document.getElementById('music-tab-' + k);
+      const s = k === key ? TAB_ACTIVE : TAB_INACTIVE;
+      Object.assign(btn.style, s);
+    });
+  }
+</script>
+
 <!-- ─── TIPS ─── -->
 <section id="sec-tips">
   <div class="container">
@@ -1910,6 +1963,7 @@
       { id:'sec-itinerary', icon:'🗓️', label:'แผนรายวัน' },
       { id:'sec-budget',    icon:'💰', label:'งบประมาณ' },
       { id:'sec-tips',      icon:'💡', label:'สิ่งที่ต้องเตรียม' },
+      { id:'sec-music',     icon:'🎵', label:'เพลงบรรยากาศ' },
       { id:'sec-share',     icon:'📱', label:'แชร์เว็บ' },
     ];
 
