@@ -1699,6 +1699,46 @@
   </div>
 </section>
 
+<!-- ─── QR SHARE ─── -->
+<section style="background:#F2EDE5; padding: 4rem 0;">
+  <div class="container">
+    <div style="display:flex; align-items:center; gap:2.5rem; background:#fff; border:1px solid var(--border); border-radius:24px; padding:2rem 2.5rem; flex-wrap:wrap; box-shadow:0 4px 24px rgba(0,0,0,.07);">
+
+      <!-- QR Code -->
+      <div style="flex-shrink:0; background:var(--cream); border-radius:16px; padding:.8rem; border:2px solid var(--border);">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fphakphumswork-tech.github.io%2Fosaka-trip-2027&color=1A1A2E&bgcolor=FAF6EE&margin=1"
+          alt="QR Code Osaka Trip"
+          width="180" height="180"
+          style="display:block; border-radius:8px;"
+        />
+      </div>
+
+      <!-- Info -->
+      <div style="flex:1; min-width:220px;">
+        <p class="section-label">Share</p>
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--dark); margin:.3rem 0 .8rem; line-height:1.2;">แชร์ให้เพื่อน<br/>Scan ได้เลย 📱</h2>
+        <p style="font-size:.88rem; color:var(--muted); margin-bottom:1.2rem; line-height:1.6;">ให้เพื่อน scan QR หรือกด Copy link ส่งได้เลย<br/>เปิดดูแผนทริปได้ทุกที่ทุกเวลา</p>
+
+        <!-- URL row -->
+        <div style="display:flex; align-items:center; gap:.6rem; background:var(--cream); border:1px solid var(--border); border-radius:10px; padding:.55rem .9rem; margin-bottom:.9rem; flex-wrap:wrap;">
+          <span style="font-size:.78rem; color:var(--dark); font-family:monospace; flex:1; word-break:break-all;" id="share-url">https://phakphumswork-tech.github.io/osaka-trip-2027</span>
+          <button onclick="copyShareUrl()" id="copy-btn"
+            style="flex-shrink:0; background:var(--dark); color:#fff; border:none; border-radius:8px; padding:.4rem .9rem; font-size:.75rem; cursor:pointer; font-family:'Noto Sans Thai',sans-serif; transition:background .2s;">
+            📋 Copy
+          </button>
+        </div>
+
+        <!-- Note -->
+        <div style="display:flex; gap:.5rem; align-items:flex-start; background:#fff8e1; border:1px solid #ffe082; border-left:4px solid #f9a825; border-radius:8px; padding:.55rem .85rem; font-size:.78rem; color:#6d4c00; line-height:1.5;">
+          💡 <span>URL ใช้งานได้หลัง <strong>Make repo Public</strong> + เปิด <strong>GitHub Pages</strong> ใน Settings</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ─── FOOTER ─── -->
 <footer>
   <span class="jp">大阪へようこそ！</span>
@@ -1829,6 +1869,38 @@
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  /* ─── COPY SHARE URL ─── */
+  function copyShareUrl() {
+    const url = document.getElementById('share-url').textContent.trim();
+    const btn = document.getElementById('copy-btn');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        btn.textContent = '✅ Copied!';
+        btn.style.background = '#27ae60';
+        setTimeout(() => { btn.textContent = '📋 Copy'; btn.style.background = 'var(--dark)'; }, 2000);
+      }).catch(() => fallbackCopy(url, btn));
+    } else {
+      fallbackCopy(url, btn);
+    }
+  }
+  function fallbackCopy(text, btn) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try {
+      document.execCommand('copy');
+      btn.textContent = '✅ Copied!';
+      btn.style.background = '#27ae60';
+      setTimeout(() => { btn.textContent = '📋 Copy'; btn.style.background = 'var(--dark)'; }, 2000);
+    } catch(e) {
+      btn.textContent = '❌ Error';
+      setTimeout(() => { btn.textContent = '📋 Copy'; btn.style.background = 'var(--dark)'; }, 2000);
+    }
+    document.body.removeChild(ta);
+  }
 </script>
 </body>
 </html>
