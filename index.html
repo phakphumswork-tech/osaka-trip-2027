@@ -123,6 +123,69 @@
 
     .hero-dates .dot { width:6px; height:6px; background:var(--gold); border-radius:50%; }
 
+    /* ─── COUNTDOWN ─── */
+    .countdown-wrap {
+      margin-top: 2.2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .countdown-label-top {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: .8rem;
+    }
+
+    .countdown {
+      display: inline-flex;
+      gap: .8rem;
+      align-items: flex-end;
+    }
+
+    .cd-box {
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(201,168,76,.35);
+      border-radius: 14px;
+      padding: .9rem 1rem;
+      min-width: 76px;
+      text-align: center;
+    }
+
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+
+    .cd-unit {
+      font-size: .6rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: .35rem;
+    }
+
+    .cd-sep {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: rgba(255,255,255,.25);
+      padding-bottom: .9rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 480px) {
+      .cd-box { min-width: 62px; padding: .7rem .6rem; }
+      .cd-num { font-size: 2rem; }
+      .countdown { gap: .5rem; }
+    }
+
     .scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -703,6 +766,19 @@
     23 February 2027
     <span class="dot"></span>
   </div>
+  <div class="countdown-wrap">
+    <p class="countdown-label-top">⏳ เหลืออีก — ก่อนออกเดินทาง</p>
+    <div class="countdown">
+      <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-unit">วัน</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-unit">ชั่วโมง</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-unit">นาที</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-unit">วินาที</div></div>
+    </div>
+  </div>
+
   <p class="scroll-hint">▼ SCROLL</p>
 </section>
 
@@ -1304,5 +1380,34 @@
   <p style="margin-top:.5rem; font-size:.78rem; opacity:.5;">Updated June 2026 · ยังอยู่ระหว่างวางแผน</p>
 </footer>
 
+<script>
+  function updateCountdown() {
+    const target = new Date('2027-02-18T20:00:00+07:00'); // BKK 20:00 departure
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent  = '0';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent  = '00';
+      document.getElementById('cd-secs').textContent  = '00';
+      document.querySelector('.countdown-label-top').textContent = '✈️ ถึงเวลาออกเดินทางแล้ว!';
+      return;
+    }
+
+    const days  = Math.floor(diff / 864e5);
+    const hours = Math.floor((diff % 864e5) / 36e5);
+    const mins  = Math.floor((diff % 36e5)  / 6e4);
+    const secs  = Math.floor((diff % 6e4)   / 1e3);
+
+    document.getElementById('cd-days').textContent  = days;
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
+    document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
