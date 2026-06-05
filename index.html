@@ -1361,6 +1361,76 @@
   </div>
 </section>
 
+<!-- ─── MAP ─── -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<section id="sec-map" style="background:#fff; padding:4.5rem 0;">
+  <div class="container">
+    <p class="section-label">Map</p>
+    <h2 class="section-title">แผนที่สถานที่ทั้งหมด 🗺️</h2>
+    <div class="divider"></div>
+
+    <div id="trip-map" style="height:480px; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,.13); margin-bottom:1.2rem;"></div>
+
+    <!-- Legend -->
+    <div style="display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;">
+      <span style="background:#C0392B; color:#fff; border-radius:20px; padding:.28rem .8rem; font-size:.75rem; font-weight:600;">📍 Day 1 · สนามบิน KIX</span>
+      <span style="background:#C9A84C; color:#fff; border-radius:20px; padding:.28rem .8rem; font-size:.75rem; font-weight:600;">📍 Day 2 · โอซาก้า</span>
+      <span style="background:#27ae60; color:#fff; border-radius:20px; padding:.28rem .8rem; font-size:.75rem; font-weight:600;">📍 Day 3 · เกียวโต</span>
+      <span style="background:#8e44ad; color:#fff; border-radius:20px; padding:.28rem .8rem; font-size:.75rem; font-weight:600;">📍 Day 4 · โอซาก้า</span>
+      <span style="background:#2980b9; color:#fff; border-radius:20px; padding:.28rem .8rem; font-size:.75rem; font-weight:600;">📍 Day 5 · USJ</span>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  const map = L.map('trip-map', { zoomControl:true, scrollWheelZoom:false }).setView([34.72, 135.52], 11);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+
+  function pin(color) {
+    return L.divIcon({
+      className:'',
+      html:`<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;background:${color};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);transform:rotate(-45deg);"></div>`,
+      iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-32]
+    });
+  }
+
+  const SPOTS = [
+    // Day 1
+    { lat:34.4348, lng:135.2440, color:'#C0392B', name:'✈️ สนามบิน Kansai (KIX)', desc:'วันที่ 1 · จุดเริ่มต้นทริป!' },
+    // Day 2 — Osaka
+    { lat:34.6873, lng:135.5262, color:'#C9A84C', name:'🏯 ปราสาทโอซาก้า', desc:'วันที่ 2 · Osaka Castle' },
+    { lat:34.6687, lng:135.5009, color:'#C9A84C', name:'🌉 โดทงโบริ', desc:'วันที่ 2 · Dotonbori — จุดถ่ายรูปสัญลักษณ์' },
+    { lat:34.6665, lng:135.5019, color:'#C9A84C', name:'🛍️ นัมบะ', desc:'วันที่ 2 · Namba — ช้อปปิ้ง' },
+    // Day 3 — Kyoto
+    { lat:34.9671, lng:135.7727, color:'#27ae60', name:'⛩️ ฟุชิมิ อินาริ', desc:'วันที่ 3 · Fushimi Inari Taisha' },
+    { lat:35.0094, lng:135.6717, color:'#27ae60', name:'🌿 อาราชิยามะ', desc:'วันที่ 3 · Arashiyama — ป่าไผ่' },
+    { lat:35.0116, lng:135.7681, color:'#27ae60', name:'🏛️ คินคาคุจิ', desc:'วันที่ 3 · Kinkaku-ji — วัดทอง' },
+    // Day 4 — Osaka
+    { lat:34.6525, lng:135.5063, color:'#8e44ad', name:'🗼 ชินเซไก', desc:'วันที่ 4 · Shinsekai — ย่านย้อนยุค' },
+    { lat:34.6679, lng:135.5073, color:'#8e44ad', name:'🏪 ตลาดคุโรมน', desc:'วันที่ 4 · Kuromon Ichiba Market' },
+    { lat:34.6941, lng:135.5027, color:'#8e44ad', name:'🌆 อุเมดะ', desc:'วันที่ 4 · Umeda — Sky Building' },
+    // Day 5 — USJ
+    { lat:34.6654, lng:135.4323, color:'#2980b9', name:'🎢 Universal Studios Japan', desc:'วันที่ 5 · USJ + Harry Potter World!' },
+  ];
+
+  SPOTS.forEach(s => {
+    L.marker([s.lat, s.lng], { icon: pin(s.color) })
+      .addTo(map)
+      .bindPopup(`<strong style="font-size:.9rem;">${s.name}</strong><br/><span style="font-size:.78rem;color:#555;">${s.desc}</span>`, { maxWidth:200 });
+  });
+
+  // Fit all markers
+  const bounds = L.latLngBounds(SPOTS.map(s => [s.lat, s.lng]));
+  map.fitBounds(bounds, { padding:[40,40] });
+})();
+</script>
+
 <!-- ─── PHOTO BANNER: FUSHIMI INARI ─── -->
 <div class="photo-banner" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a2/Double_torii_path_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg'); background-position: center 30%;">
   <div class="photo-banner-overlay">
@@ -1907,6 +1977,7 @@
       { id:'sec-flights',   icon:'✈️', label:'ตั๋วเครื่องบิน' },
       { id:'sec-overview',  icon:'📋', label:'ภาพรวมทริป' },
       { id:'sec-gallery',   icon:'🗼', label:'สถานที่น่าไป' },
+      { id:'sec-map',       icon:'🗺️', label:'แผนที่' },
       { id:'sec-itinerary', icon:'🗓️', label:'แผนรายวัน' },
       { id:'sec-budget',    icon:'💰', label:'งบประมาณ' },
       { id:'sec-tips',      icon:'💡', label:'สิ่งที่ต้องเตรียม' },
