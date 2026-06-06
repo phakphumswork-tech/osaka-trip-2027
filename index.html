@@ -1300,7 +1300,7 @@
   globe.add(earthMesh);
 
   new THREE.TextureLoader().load(
-    'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/land_ocean_ice_cloud_2048.jpg',
+    'https://cdn.jsdelivr.net/npm/three-globe@2.31.2/example/img/earth-blue-marble.jpg',
     tex => {
       earthMesh.material = new THREE.MeshPhongMaterial({ map:tex, specular:0x111122, shininess:8 });
     }
@@ -1424,9 +1424,9 @@
   ]);
   let planeT = 0;
 
-  /* ── Initial rotation (Asia centered, calculated) ── */
-  globe.rotation.y = -0.45;
-  globe.rotation.x =  0.12;
+  /* ── Initial rotation: center on Thailand-Japan (118°E, 24°N) ── */
+  globe.rotation.y = -0.49;
+  globe.rotation.x = -0.28;
 
   /* ── Drag ── */
   let drag=false, px=0, py=0, vy=0, vx=0;
