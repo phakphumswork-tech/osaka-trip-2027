@@ -1469,8 +1469,8 @@
     tick++;
 
     if (!drag) {
-      vy*=.96; globe.rotation.y += vy+.0035;
-      vx*=.93; globe.rotation.x += vx;
+      vy*=.92; globe.rotation.y += vy;
+      vx*=.92; globe.rotation.x += vx;
       globe.rotation.x = Math.max(-.5, Math.min(.5, globe.rotation.x));
     }
 
