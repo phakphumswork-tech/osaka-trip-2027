@@ -1302,6 +1302,8 @@
   new THREE.TextureLoader().load(
     'https://cdn.jsdelivr.net/npm/three-globe@2.31.2/example/img/earth-blue-marble.jpg',
     tex => {
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.offset.x = 0.5;   /* shift 180° to align with ll() coordinate system */
       earthMesh.material = new THREE.MeshPhongMaterial({ map:tex, specular:0x111122, shininess:8 });
     }
   );
