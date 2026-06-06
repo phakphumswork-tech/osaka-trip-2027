@@ -1269,7 +1269,7 @@
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
-  camera.position.z = 2.7;
+  camera.position.z = 3.3;
 
   /* ── Starfield ── */
   const starPos = new Float32Array(4000 * 3);
@@ -1403,11 +1403,18 @@
     ));
   });
 
-  /* Animated plane dot */
-  const planeDot = new THREE.Mesh(
-    new THREE.SphereGeometry(0.032, 16, 16),
-    new THREE.MeshBasicMaterial({ color:0xffffff })
-  );
+  /* Animated plane sprite */
+  const planeCanvas = document.createElement('canvas');
+  planeCanvas.width = 96; planeCanvas.height = 96;
+  const planeCtx = planeCanvas.getContext('2d');
+  planeCtx.font = '64px serif';
+  planeCtx.textAlign = 'center';
+  planeCtx.textBaseline = 'middle';
+  planeCtx.fillText('✈', 48, 52);
+  const planeTex = new THREE.CanvasTexture(planeCanvas);
+  const planeMat = new THREE.SpriteMaterial({ map:planeTex, depthTest:false, transparent:true });
+  const planeDot = new THREE.Sprite(planeMat);
+  planeDot.scale.set(0.14, 0.14, 0.14);
   globe.add(planeDot);
 
   /* Combined route curve for plane animation */
@@ -1469,8 +1476,15 @@
 
     /* Plane moves along route */
     planeT = (planeT + 0.0018) % 1;
-    const planePos = routeCurve.getPoint(planeT);
+    const planePos  = routeCurve.getPoint(planeT);
+    const planeNext = routeCurve.getPoint((planeT + 0.005) % 1);
     planeDot.position.copy(planePos);
+
+    /* Rotate sprite canvas to face direction of travel (screen-space angle) */
+    const pA = planePos.clone().project(camera);
+    const pB = planeNext.clone().applyMatrix4(globe.matrixWorld).project(camera);
+    const angle = Math.atan2(pB.y - pA.y, pB.x - pA.x);
+    planeMat.rotation = angle - Math.PI / 2;
 
     /* Pulse city rings */
     const pulse = Math.sin(tick * 0.06) * 0.15 + 1;
