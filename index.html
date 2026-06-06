@@ -1403,18 +1403,51 @@
     ));
   });
 
-  /* Animated plane sprite */
+  /* Animated plane sprite — white airplane shape pointing RIGHT (+x) */
   const planeCanvas = document.createElement('canvas');
-  planeCanvas.width = 96; planeCanvas.height = 96;
-  const planeCtx = planeCanvas.getContext('2d');
-  planeCtx.font = '64px serif';
-  planeCtx.textAlign = 'center';
-  planeCtx.textBaseline = 'middle';
-  planeCtx.fillText('✈', 48, 52);
+  planeCanvas.width = 128; planeCanvas.height = 128;
+  const pc = planeCanvas.getContext('2d');
+  pc.save();
+  pc.translate(64, 64);
+  pc.shadowColor = 'rgba(255,230,120,0.85)';
+  pc.shadowBlur = 14;
+  pc.fillStyle = 'rgba(255,255,255,0.96)';
+
+  /* Fuselage — points RIGHT */
+  pc.beginPath();
+  pc.moveTo(38, 0);         // nose
+  pc.lineTo(18, -5);
+  pc.lineTo(-26, -5);       // tail
+  pc.lineTo(-26,  5);
+  pc.lineTo(18,  5);
+  pc.closePath();
+  pc.fill();
+
+  /* Main swept wings */
+  pc.beginPath();
+  pc.moveTo(12, -5); pc.lineTo(-10, -5);
+  pc.lineTo(-20, -28); pc.lineTo(-5, -28);
+  pc.closePath(); pc.fill();
+  pc.beginPath();
+  pc.moveTo(12,  5); pc.lineTo(-10,  5);
+  pc.lineTo(-20,  28); pc.lineTo(-5,  28);
+  pc.closePath(); pc.fill();
+
+  /* Tail stabilisers */
+  pc.beginPath();
+  pc.moveTo(-18, -5); pc.lineTo(-26, -5);
+  pc.lineTo(-34, -16); pc.lineTo(-26, -16);
+  pc.closePath(); pc.fill();
+  pc.beginPath();
+  pc.moveTo(-18,  5); pc.lineTo(-26,  5);
+  pc.lineTo(-34,  16); pc.lineTo(-26,  16);
+  pc.closePath(); pc.fill();
+
+  pc.restore();
   const planeTex = new THREE.CanvasTexture(planeCanvas);
   const planeMat = new THREE.SpriteMaterial({ map:planeTex, depthTest:false, transparent:true });
   const planeDot = new THREE.Sprite(planeMat);
-  planeDot.scale.set(0.14, 0.14, 0.14);
+  planeDot.scale.set(0.16, 0.16, 0.16);
   globe.add(planeDot);
 
   /* Combined route curve for plane animation */
@@ -1480,11 +1513,10 @@
     const planeNext = routeCurve.getPoint((planeT + 0.005) % 1);
     planeDot.position.copy(planePos);
 
-    /* Rotate sprite canvas to face direction of travel (screen-space angle) */
-    const pA = planePos.clone().project(camera);
+    /* Rotate plane to face direction of travel */
+    const pA = planePos.clone().applyMatrix4(globe.matrixWorld).project(camera);
     const pB = planeNext.clone().applyMatrix4(globe.matrixWorld).project(camera);
-    const angle = Math.atan2(pB.y - pA.y, pB.x - pA.x);
-    planeMat.rotation = angle - Math.PI / 2;
+    planeMat.rotation = Math.atan2(pB.y - pA.y, pB.x - pA.x);
 
     /* Pulse city rings */
     const pulse = Math.sin(tick * 0.06) * 0.15 + 1;
