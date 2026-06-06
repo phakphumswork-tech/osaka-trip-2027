@@ -1426,7 +1426,7 @@
 
   /* ── Initial rotation: center on Thailand-Japan (118°E, 24°N) ── */
   globe.rotation.y = Math.PI - 0.49;
-  globe.rotation.x = -0.28 - (30 * Math.PI / 180);  /* tilt up 30° */
+  globe.rotation.x = -0.28 + (30 * Math.PI / 180);  /* net: tilt down 30° from original */
 
   /* ── Drag ── */
   let drag=false, px=0, py=0, vy=0, vx=0;
