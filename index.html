@@ -1225,6 +1225,204 @@
   </div>
 </div>
 
+<!-- ─── 3D GLOBE ─── -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<section id="sec-globe" style="background:linear-gradient(180deg,#06071a 0%,#0c0d28 100%); padding:4rem 0; overflow:hidden;">
+  <div class="container" style="text-align:center;">
+    <p class="section-label" style="color:var(--gold);">Flight Route</p>
+    <h2 class="section-title" style="color:#fff;">เส้นทางบิน 3D 🌏</h2>
+    <div class="divider" style="background:linear-gradient(90deg,var(--gold),transparent); margin-bottom:2rem;"></div>
+
+    <div style="position:relative; max-width:540px; margin:0 auto; user-select:none;">
+      <canvas id="globe-canvas" style="width:100%; display:block; cursor:grab; border-radius:50%;"></canvas>
+
+      <!-- City labels -->
+      <div id="glb-bkk" style="position:absolute;pointer-events:none;transition:opacity .25s;white-space:nowrap;">
+        <span style="background:rgba(10,10,30,.75);backdrop-filter:blur(4px);color:#ffd700;font-size:.72rem;font-weight:700;padding:.22rem .6rem;border-radius:20px;border:1px solid rgba(255,215,0,.4);box-shadow:0 0 10px rgba(255,215,0,.3);">🇹🇭 Bangkok</span>
+      </div>
+      <div id="glb-sin" style="position:absolute;pointer-events:none;transition:opacity .25s;white-space:nowrap;">
+        <span style="background:rgba(10,10,30,.75);backdrop-filter:blur(4px);color:#ffd700;font-size:.72rem;font-weight:700;padding:.22rem .6rem;border-radius:20px;border:1px solid rgba(255,215,0,.4);box-shadow:0 0 10px rgba(255,215,0,.3);">🇸🇬 Singapore</span>
+      </div>
+      <div id="glb-kix" style="position:absolute;pointer-events:none;transition:opacity .25s;white-space:nowrap;">
+        <span style="background:rgba(10,10,30,.75);backdrop-filter:blur(4px);color:#ffd700;font-size:.72rem;font-weight:700;padding:.22rem .6rem;border-radius:20px;border:1px solid rgba(255,215,0,.4);box-shadow:0 0 10px rgba(255,215,0,.3);">🇯🇵 Osaka</span>
+      </div>
+    </div>
+
+    <p style="color:rgba(255,255,255,.3);font-size:.72rem;margin-top:1.2rem;">🖱️ ลาก / แตะเพื่อหมุนโลก</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  const canvas  = document.getElementById('globe-canvas');
+  const wrap    = canvas.parentElement;
+
+  /* ── size ── */
+  function sz() {
+    const s = Math.min(wrap.clientWidth, 520);
+    return { w: s, h: s };
+  }
+  let { w, h } = sz();
+  canvas.style.height = h + 'px';
+
+  /* ── renderer ── */
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(w, h);
+
+  /* ── scene / camera ── */
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  camera.position.z = 2.65;
+
+  /* ── lights ── */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+  const sun = new THREE.DirectionalLight(0xaac4ff, 1.6);
+  sun.position.set(4, 3, 5);
+  scene.add(sun);
+
+  /* ── globe group (everything rotates together) ── */
+  const globe = new THREE.Group();
+  scene.add(globe);
+  const R = 1;
+
+  /* Earth */
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R, 64, 64),
+    new THREE.MeshPhongMaterial({ color:0x0b1640, emissive:0x040b20, specular:0x1a336b, shininess:12 })
+  ));
+
+  /* Grid lines */
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.001, 20, 20),
+    new THREE.MeshBasicMaterial({ color:0x1e3d6e, wireframe:true, transparent:true, opacity:0.22 })
+  ));
+
+  /* Outer atmosphere (fixed, not in group) */
+  scene.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.07, 64, 64),
+    new THREE.MeshPhongMaterial({ color:0x2255bb, transparent:true, opacity:0.11, side:THREE.BackSide })
+  ));
+
+  /* ── helpers ── */
+  function ll(lat, lng, r) {
+    r = r || R;
+    const phi   = (90 - lat) * Math.PI / 180;
+    const theta = (lng + 180) * Math.PI / 180;
+    return new THREE.Vector3(
+      -r * Math.sin(phi) * Math.cos(theta),
+       r * Math.cos(phi),
+       r * Math.sin(phi) * Math.sin(theta)
+    );
+  }
+
+  /* ── cities ── */
+  const CITIES = [
+    { id:'bkk', lat:13.70,  lng:100.52, label:'glb-bkk' },
+    { id:'sin', lat: 1.35,  lng:103.82, label:'glb-sin' },
+    { id:'kix', lat:34.43,  lng:135.24, label:'glb-kix' },
+  ];
+
+  const cityData = [];
+  CITIES.forEach(c => {
+    const pos = ll(c.lat, c.lng, R + 0.015);
+
+    const dot = new THREE.Mesh(
+      new THREE.SphereGeometry(0.027, 16, 16),
+      new THREE.MeshBasicMaterial({ color:0xffd700 })
+    );
+    dot.position.copy(pos);
+    globe.add(dot);
+
+    /* Halo ring */
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.036, 0.055, 32),
+      new THREE.MeshBasicMaterial({ color:0xffd700, transparent:true, opacity:0.45, side:THREE.DoubleSide })
+    );
+    ring.position.copy(pos);
+    ring.lookAt(0, 0, 0);
+    globe.add(ring);
+
+    cityData.push({ localPos: pos.clone(), el: document.getElementById(c.label) });
+  });
+
+  /* ── flight arcs ── */
+  function addArc(a, b) {
+    const s = ll(a.lat, a.lng).normalize();
+    const e = ll(b.lat, b.lng).normalize();
+    const pts = [];
+    for (let i = 0; i <= 80; i++) {
+      const t = i / 80;
+      const v = new THREE.Vector3().lerpVectors(s, e, t).normalize();
+      pts.push(v.multiplyScalar(R + Math.sin(Math.PI * t) * 0.22 + 0.015));
+    }
+    globe.add(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 80, 0.005, 8, false),
+      new THREE.MeshBasicMaterial({ color:0xffd700, transparent:true, opacity:0.88 })
+    ));
+  }
+  addArc(CITIES[0], CITIES[1]);
+  addArc(CITIES[1], CITIES[2]);
+
+  /* ── initial orientation: center Asia ── */
+  globe.rotation.y = -1.8;
+
+  /* ── drag ── */
+  let drag = false, px = 0, py = 0, vy = 0, vx = 0;
+  function down(x, y) { drag=true; px=x; py=y; vy=0; vx=0; canvas.style.cursor='grabbing'; }
+  function move(x, y) {
+    if (!drag) return;
+    vy = (x - px) * 0.006; vx = (y - py) * 0.003;
+    globe.rotation.y += vy; globe.rotation.x += vx;
+    px = x; py = y;
+  }
+  function up() { drag=false; canvas.style.cursor='grab'; }
+
+  canvas.addEventListener('mousedown',  e => down(e.clientX, e.clientY));
+  canvas.addEventListener('touchstart', e => down(e.touches[0].clientX, e.touches[0].clientY), { passive:true });
+  window.addEventListener('mousemove',  e => move(e.clientX, e.clientY));
+  window.addEventListener('touchmove',  e => move(e.touches[0].clientX, e.touches[0].clientY), { passive:true });
+  window.addEventListener('mouseup',  up);
+  window.addEventListener('touchend', up);
+
+  /* ── label projection ── */
+  const tmp = new THREE.Vector3();
+  function updateLabels() {
+    const rect = canvas.getBoundingClientRect();
+    cityData.forEach(({ localPos, el }) => {
+      if (!el) return;
+      tmp.copy(localPos).applyMatrix4(globe.matrixWorld).project(camera);
+      const behind = tmp.z > 0.96;
+      el.style.opacity = behind ? '0' : '1';
+      if (!behind) {
+        el.style.left = ((tmp.x * 0.5 + 0.5) * rect.width  + 12) + 'px';
+        el.style.top  = ((1 - (tmp.y * 0.5 + 0.5)) * rect.height - 14) + 'px';
+      }
+    });
+  }
+
+  /* ── animate ── */
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!drag) {
+      vy *= 0.96; globe.rotation.y += vy + 0.004;
+      vx *= 0.92; globe.rotation.x += vx;
+      globe.rotation.x = Math.max(-0.55, Math.min(0.55, globe.rotation.x));
+    }
+    updateLabels();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  /* ── resize ── */
+  window.addEventListener('resize', () => {
+    const { w: nw, h: nh } = sz();
+    canvas.style.height = nh + 'px';
+    renderer.setSize(nw, nh);
+  });
+})();
+</script>
+
 <!-- ─── OVERVIEW ─── -->
 <section id="sec-overview">
   <div class="container">
@@ -1975,6 +2173,7 @@
       { id:'sec-hero',      icon:'🏠', label:'หน้าแรก' },
       { id:'sec-steps',     icon:'📍', label:'Progress' },
       { id:'sec-flights',   icon:'✈️', label:'ตั๋วเครื่องบิน' },
+      { id:'sec-globe',     icon:'🌏', label:'เส้นทางบิน 3D' },
       { id:'sec-overview',  icon:'📋', label:'ภาพรวมทริป' },
       { id:'sec-gallery',   icon:'🗼', label:'สถานที่น่าไป' },
       { id:'sec-map',       icon:'🗺️', label:'แผนที่' },
