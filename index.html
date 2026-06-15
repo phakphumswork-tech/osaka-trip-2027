@@ -959,6 +959,36 @@
       .day-block { gap: 1rem; }
       .budget-table { font-size: .82rem; }
     }
+
+    /* ─── APP-LIKE POLISH ─── */
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+    /* tap feedback on touch devices */
+    @media (hover: none) {
+      a:active, button:active { opacity: .65; }
+      .ov-card:active, .wx-stat:active, .ticket:active { transform: scale(.97); transition: transform .08s ease; }
+    }
+
+    @media (max-width: 720px) {
+      /* dynamic viewport height — avoids the mobile URL-bar resize jump */
+      .hero { min-height: 100vh; min-height: 100svh; min-height: 100dvh; }
+
+      /* denser, app-like spacing */
+      section { padding: 3.4rem 0; }
+      .section-title { margin-bottom: 1.5rem; }
+      .divider { margin: .7rem 0 1.5rem; }
+
+      /* active-tab indicator on bottom bar (instant, no transition) */
+      .mtab-item { position: relative; }
+      .mtab-item::before {
+        content: ''; position: absolute; top: 0; left: 50%;
+        width: 26px; height: 3px; border-radius: 0 0 4px 4px;
+        background: var(--red); transform: translateX(-50%); opacity: 0;
+      }
+      .mtab-item.active::before { opacity: 1; }
+      .mtab-item.active { font-weight: 700; }
+    }
   </style>
 </head>
 <body>
