@@ -21,11 +21,15 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { -webkit-text-size-adjust: 100%; }
+
     body {
       font-family: 'Noto Sans Thai', sans-serif;
       background: var(--cream);
       color: var(--text);
       line-height: 1.7;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
     }
 
     /* ─── HERO ─── */
@@ -2435,6 +2439,64 @@
       .fnav-item:hover { background:var(--red); transform:translateX(-3px); }
       .fnav-item .fi-icon { font-size:1rem; }
       .fnav-item.active { background:var(--gold); color:var(--dark); }
+
+      /* ── mobile: bottom tab bar + bottom-sheet menu ── */
+      #mtab { display:none; }
+      #fnav-backdrop {
+        display:none; position:fixed; inset:0; z-index:9998;
+        background:rgba(0,0,0,.45); opacity:0; pointer-events:none;
+        transition:opacity .3s;
+      }
+      #fnav-backdrop.open { opacity:1; pointer-events:auto; }
+
+      @media (max-width:720px) {
+        #fnav-btn { display:none; }
+        #fnav-backdrop { display:block; }
+
+        #mtab {
+          display:flex; position:fixed; left:0; right:0; bottom:0; z-index:9999;
+          background:rgba(255,255,255,.95); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+          border-top:1px solid var(--border); box-shadow:0 -2px 18px rgba(0,0,0,.08);
+          padding-bottom:env(safe-area-inset-bottom,0px);
+        }
+        .mtab-item {
+          flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+          padding:.5rem 0 .55rem; background:none; border:none; cursor:pointer;
+          color:var(--muted); font-family:'Noto Sans Thai',sans-serif; font-size:.64rem; font-weight:600;
+          -webkit-tap-highlight-color:transparent; transition:color .2s;
+        }
+        .mtab-item .mt-ico { font-size:1.3rem; line-height:1; transition:transform .18s; }
+        .mtab-item.active { color:var(--red); }
+        .mtab-item.active .mt-ico { transform:translateY(-2px) scale(1.12); }
+        .mtab-item:active .mt-ico { transform:scale(.82); }
+
+        #fnav-wrap { position:static; }
+        #fnav-menu {
+          position:fixed; left:0; right:0; bottom:0; z-index:9999;
+          flex-direction:column; align-items:stretch; gap:.4rem;
+          background:#fff; border-radius:20px 20px 0 0;
+          padding:1.5rem 1rem calc(1.2rem + 60px + env(safe-area-inset-bottom,0px));
+          box-shadow:0 -10px 40px rgba(0,0,0,.3);
+          opacity:1; pointer-events:none;
+          overflow-y:auto; -webkit-overflow-scrolling:touch;
+          max-height:82vh;
+          transform:translateY(115%); transition:transform .33s cubic-bezier(.32,.72,0,1);
+        }
+        #fnav-menu::before {
+          content:''; position:absolute; top:.6rem; left:50%; transform:translateX(-50%);
+          width:42px; height:4px; border-radius:2px; background:var(--border);
+        }
+        #fnav-menu.open { transform:translateY(0); pointer-events:auto; max-height:82vh; }
+        .fnav-item, #fnav-menu.open .fnav-item {
+          opacity:1; transform:none; width:100%; justify-content:flex-start;
+          background:var(--cream); color:var(--text); border-radius:12px;
+          padding:.7rem .9rem; font-size:.92rem; box-shadow:none; transition-delay:0s;
+        }
+        .fnav-item:hover { transform:none; }
+        .fnav-item.active { background:var(--gold); color:var(--dark); }
+
+        body { padding-bottom:60px; }
+      }
     `;
     document.head.appendChild(style);
 
@@ -2469,31 +2531,76 @@
     wrap.appendChild(btn);
     document.body.appendChild(wrap);
 
+    /* ── backdrop (mobile bottom-sheet) ── */
+    const backdrop = document.createElement('div');
+    backdrop.id = 'fnav-backdrop';
+    document.body.appendChild(backdrop);
+    backdrop.addEventListener('click', () => toggleMenu(false));
+
     /* ── toggle ── */
     let isOpen = false;
     function toggleMenu(force) {
       isOpen = force !== undefined ? force : !isOpen;
       menu.classList.toggle('open', isOpen);
       btn.classList.toggle('open', isOpen);
+      backdrop.classList.toggle('open', isOpen);
       btn.innerHTML = isOpen ? '+' : '☰';
+      syncMtab();
     }
 
-    /* ── close on outside click ── */
+    /* ── close on outside click (desktop floating menu) ── */
     document.addEventListener('click', (e) => {
-      if (isOpen && !wrap.contains(e.target)) toggleMenu(false);
+      if (isOpen && !wrap.contains(e.target) && !bar.contains(e.target) && e.target !== backdrop) toggleMenu(false);
     });
+
+    /* ── mobile bottom tab bar ── */
+    const MTABS = [
+      { id:'sec-hero',      icon:'🏠', label:'หน้าแรก' },
+      { id:'sec-itinerary', icon:'🗓️', label:'แผน' },
+      { id:'sec-weather',   icon:'🌤️', label:'อากาศ' },
+      { id:'sec-map',       icon:'🗺️', label:'แผนที่' },
+      { id:'__more',        icon:'☰',  label:'เพิ่มเติม' },
+    ];
+    const bar = document.createElement('nav');
+    bar.id = 'mtab';
+    MTABS.forEach(t => {
+      const b = document.createElement('button');
+      b.className = 'mtab-item';
+      b.dataset.target = t.id;
+      b.innerHTML = `<span class="mt-ico">${t.icon}</span>${t.label}`;
+      b.addEventListener('click', () => {
+        if (t.id === '__more') { toggleMenu(); return; }
+        toggleMenu(false);
+        const el = document.getElementById(t.id);
+        if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+      bar.appendChild(b);
+    });
+    document.body.appendChild(bar);
+
+    const PRIMARY = MTABS.filter(t => t.id !== '__more').map(t => t.id);
+    function syncMtab() {
+      bar.querySelectorAll('.mtab-item').forEach(b => {
+        const t = b.dataset.target;
+        const active = t === '__more' ? isOpen : (!isOpen && t === currentSec);
+        b.classList.toggle('active', active);
+      });
+    }
 
     /* ── highlight active section ── */
     const ids = NAV_ITEMS.map(n => n.id);
+    let currentSec = ids[0];
     function onScroll() {
       let current = ids[0];
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= 80) current = id;
       });
+      currentSec = current;
       menu.querySelectorAll('.fnav-item').forEach(a => {
         a.classList.toggle('active', a.dataset.target === current);
       });
+      syncMtab();
     }
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
