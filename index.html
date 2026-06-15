@@ -2,25 +2,8 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Osaka Trip 2027 🇯🇵</title>
-
-  <!-- ─── PWA ─── -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#C0392B" />
-  <link rel="icon" href="favicon-32.png" sizes="32x32" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Osaka 2027" />
-
-  <!-- ─── Open Graph (สวยตอนแชร์ใน LINE/FB) ─── -->
-  <meta property="og:title" content="Osaka Trip 2027 🇯🇵" />
-  <meta property="og:description" content="แผนเที่ยวโอซาก้าฤดูหนาว 18–23 ก.พ. 2027 — ตั๋ว เส้นทางบิน 3D แผนรายวัน งบประมาณ" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="icon-512.png" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Playfair+Display:wght@400;700&family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -1598,6 +1581,97 @@
   </div>
 </section>
 
+<!-- ─── WEATHER ─── -->
+<style>
+  .weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;}
+  @media(max-width:720px){.weather-grid{grid-template-columns:1fr;}}
+  .wx-now{background:linear-gradient(135deg,#2a3a6e,#1a1a2e);color:#fff;border-radius:18px;padding:1.6rem;box-shadow:0 10px 30px rgba(0,0,0,.12);}
+  .wx-now-head{font-size:.85rem;opacity:.85;display:flex;align-items:center;gap:.5rem;}
+  .wx-now-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:wxpulse 2s infinite;}
+  @keyframes wxpulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6);}70%{box-shadow:0 0 0 9px rgba(74,222,128,0);}100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}}
+  .wx-now-main{display:flex;align-items:center;gap:1rem;margin:1.1rem 0;}
+  .wx-now-icon{font-size:3.4rem;line-height:1;}
+  .wx-now-temp{font-size:2.8rem;font-weight:700;font-family:'Playfair Display',serif;line-height:1;}
+  .wx-now-desc{opacity:.85;margin-top:.2rem;}
+  .wx-now-meta{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem;opacity:.92;border-top:1px solid rgba(255,255,255,.15);padding-top:.9rem;}
+  .wx-now-meta b{font-weight:700;}
+  .wx-feb{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;}
+  .wx-feb-title{font-weight:700;color:var(--dark);margin-bottom:1rem;}
+  .wx-feb-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+  .wx-stat{background:var(--cream);border-radius:12px;padding:.8rem;text-align:center;}
+  .wx-stat-label{display:block;font-size:.78rem;color:var(--muted);}
+  .wx-stat-val{display:block;font-size:1.4rem;font-weight:700;color:var(--red);font-family:'Playfair Display',serif;}
+  .wx-feb-note{margin-top:1rem;font-size:.88rem;line-height:1.6;color:var(--text);background:#FFF6E9;border-left:3px solid var(--gold);padding:.8rem .9rem;border-radius:8px;}
+  .wx-credit{text-align:center;font-size:.78rem;color:var(--muted);margin-top:1.2rem;}
+</style>
+<section id="sec-weather" style="background:#fff; padding:4rem 0;">
+  <div class="container">
+    <p class="section-label">Weather</p>
+    <h2 class="section-title">อากาศที่โอซาก้า 🌤️</h2>
+    <div class="divider"></div>
+
+    <div class="weather-grid">
+      <div class="wx-now">
+        <div class="wx-now-head"><span class="wx-now-dot"></span> โอซาก้าตอนนี้ (เวลาญี่ปุ่น)</div>
+        <div class="wx-now-main">
+          <span class="wx-now-icon" id="wx-icon">⏳</span>
+          <div>
+            <div class="wx-now-temp"><span id="wx-temp">--</span>°C</div>
+            <div class="wx-now-desc" id="wx-desc">กำลังโหลด...</div>
+          </div>
+        </div>
+        <div class="wx-now-meta">
+          <span>🌡️ รู้สึกเหมือน <b id="wx-feels">--</b>°</span>
+          <span>💧 ความชื้น <b id="wx-hum">--</b>%</span>
+          <span>💨 ลม <b id="wx-wind">--</b> km/h</span>
+        </div>
+      </div>
+
+      <div class="wx-feb">
+        <div class="wx-feb-title">📅 เดือนกุมภาพันธ์ (ช่วงทริป)</div>
+        <div class="wx-feb-stats">
+          <div class="wx-stat"><span class="wx-stat-label">สูงสุดเฉลี่ย</span><span class="wx-stat-val">9.7°C</span></div>
+          <div class="wx-stat"><span class="wx-stat-label">ต่ำสุดเฉลี่ย</span><span class="wx-stat-val">2.8°C</span></div>
+          <div class="wx-stat"><span class="wx-stat-label">วันฝนตก</span><span class="wx-stat-val">~6 วัน</span></div>
+          <div class="wx-stat"><span class="wx-stat-label">พระอาทิตย์ตก</span><span class="wx-stat-val">~17:45</span></div>
+        </div>
+        <div class="wx-feb-note">❄️ <b>หนาว</b> — เตรียมเสื้อโค้ทกันหนาว, ฮีทเทค, ผ้าพันคอ, ถุงมือ และลิปมัน (อากาศแห้งมาก) โอกาสหิมะตกในเมืองมีน้อย แต่ลมเย็นทำให้รู้สึกหนาวกว่าตัวเลข</div>
+      </div>
+    </div>
+    <p class="wx-credit">ข้อมูลปัจจุบันจาก Open-Meteo · ค่าเฉลี่ยเดือน ก.พ. จากสถิติย้อนหลัง</p>
+  </div>
+</section>
+<script>
+  (function(){
+    const WX = {
+      0:['☀️','ท้องฟ้าแจ่มใส'],1:['🌤️','ส่วนใหญ่แจ่มใส'],2:['⛅','มีเมฆบางส่วน'],3:['☁️','เมฆมาก'],
+      45:['🌫️','หมอก'],48:['🌫️','หมอกน้ำแข็ง'],
+      51:['🌦️','ฝนปรอยเบา'],53:['🌦️','ฝนปรอย'],55:['🌧️','ฝนปรอยหนัก'],
+      61:['🌧️','ฝนเล็กน้อย'],63:['🌧️','ฝน'],65:['🌧️','ฝนหนัก'],
+      66:['🌨️','ฝนเยือกแข็ง'],67:['🌨️','ฝนเยือกแข็งหนัก'],
+      71:['🌨️','หิมะเล็กน้อย'],73:['❄️','หิมะ'],75:['❄️','หิมะหนัก'],77:['🌨️','เกล็ดหิมะ'],
+      80:['🌦️','ฝนซู่'],81:['🌧️','ฝนซู่'],82:['⛈️','ฝนซู่หนัก'],
+      85:['🌨️','หิมะซู่'],86:['❄️','หิมะซู่หนัก'],
+      95:['⛈️','พายุฝนฟ้าคะนอง'],96:['⛈️','พายุลูกเห็บ'],99:['⛈️','พายุลูกเห็บหนัก']
+    };
+    const url='https://api.open-meteo.com/v1/forecast?latitude=34.6937&longitude=135.5023'
+      +'&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FTokyo';
+    fetch(url).then(r=>r.json()).then(d=>{
+      const c=d.current; if(!c) throw new Error('no data');
+      const w=WX[c.weather_code]||['🌡️','—'];
+      document.getElementById('wx-icon').textContent=w[0];
+      document.getElementById('wx-desc').textContent=w[1];
+      document.getElementById('wx-temp').textContent=Math.round(c.temperature_2m);
+      document.getElementById('wx-feels').textContent=Math.round(c.apparent_temperature);
+      document.getElementById('wx-hum').textContent=c.relative_humidity_2m;
+      document.getElementById('wx-wind').textContent=Math.round(c.wind_speed_10m);
+    }).catch(()=>{
+      document.getElementById('wx-icon').textContent='⚠️';
+      document.getElementById('wx-desc').textContent='โหลดข้อมูลไม่สำเร็จ';
+    });
+  })();
+</script>
+
 <!-- ─── PHOTO BANNER: OSAKA CASTLE ─── -->
 <div class="photo-banner" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/ab/Osaka_Castle_and_pond.jpg');">
   <div class="photo-banner-overlay">
@@ -2308,6 +2382,7 @@
       { id:'sec-flights',   icon:'✈️', label:'ตั๋วเครื่องบิน' },
       { id:'sec-globe',     icon:'🌏', label:'เส้นทางบิน 3D' },
       { id:'sec-overview',  icon:'📋', label:'ภาพรวมทริป' },
+      { id:'sec-weather',   icon:'🌤️', label:'อากาศ' },
       { id:'sec-gallery',   icon:'🗼', label:'สถานที่น่าไป' },
       { id:'sec-map',       icon:'🗺️', label:'แผนที่' },
       { id:'sec-itinerary', icon:'🗓️', label:'แผนรายวัน' },
@@ -2424,13 +2499,12 @@
     onScroll();
   })();
 
-  /* ─── PWA: register service worker ─── */
+  /* ─── Cleanup: remove any previously-installed service worker / caches ─── */
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch((err) => {
-        console.warn('SW registration failed:', err);
-      });
-    });
+    navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
+  }
+  if (window.caches) {
+    caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
   }
 </script>
 </body>
