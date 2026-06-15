@@ -4,24 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Osaka Trip 2027 🇯🇵</title>
+  <script>
+    /* set theme before render to avoid flash; default = dark */
+    (function(){
+      try { document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); }
+      catch(e){ document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Playfair+Display:wght@400;700&family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
+    :root {                 /* LIGHT theme (base) */
       --red:    #C0392B;
       --gold:   #C9A84C;
-      --cream:  #FAF6EE;
-      --dark:   #1A1A2E;
+      --cream:  #FAF6EE;     /* page background */
+      --cream2: #F2EDE5;     /* alternate section background */
+      --card:   #FFFFFF;     /* cards / white sections */
+      --surface-tint: #FFF6E9;
+      --row-alt: #F9F5EE;    /* budget zebra rows */
       --text:   #3A3A3A;
+      --heading:#1A1A2E;     /* heading text (flips with theme) */
       --muted:  #888;
-      --card:   #FFFFFF;
       --border: #E8E0D0;
+      --dark:   #1A1A2E;     /* constant dark surface: footer, badges, buttons */
+      --bar-bg: rgba(255,255,255,.95); /* mobile bottom bar */
+    }
+
+    [data-theme="dark"] {   /* DARK theme overrides */
+      --cream:  #14141f;
+      --cream2: #191926;
+      --card:   #1f1f33;
+      --surface-tint: #2a2438;
+      --row-alt: #23233a;
+      --text:   #d2d2de;
+      --heading:#f4f4f9;
+      --muted:  #9696ad;
+      --border: #32324c;
+      --bar-bg: rgba(20,20,31,.95);
+      /* --dark stays constant so footer / badges / buttons remain dark */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html { -webkit-text-size-adjust: 100%; }
+
+    /* smooth fade when switching theme */
+    body, section { transition: background-color .35s ease, color .35s ease; }
+
+    /* ─── THEME TOGGLE ─── */
+    #theme-toggle {
+      position: fixed; top: 1rem; right: 1rem; z-index: 10000;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(0,0,0,.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: #fff; font-size: 1.15rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 3px 14px rgba(0,0,0,.3);
+      transition: transform .2s, background .2s;
+    }
+    #theme-toggle:hover { transform: scale(1.08); }
+    #theme-toggle:active { transform: scale(.92); }
 
     body {
       font-family: 'Noto Sans Thai', sans-serif;
@@ -220,7 +264,7 @@
     .section-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.8rem, 4vw, 2.6rem);
-      color: var(--dark);
+      color: var(--heading);
       margin-bottom: 2.5rem;
       line-height: 1.2;
     }
@@ -629,7 +673,7 @@
 
     .ov-icon { font-size: 2rem; margin-bottom: .6rem; display: block; }
     .ov-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
-    .ov-value { font-size: 1rem; font-weight: 700; color: var(--dark); margin-top: .2rem; }
+    .ov-value { font-size: 1rem; font-weight: 700; color: var(--heading); margin-top: .2rem; }
 
     /* ─── GALLERY ─── */
     .gallery-grid {
@@ -768,7 +812,7 @@
     .day-content h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.25rem;
-      color: var(--dark);
+      color: var(--heading);
       margin-bottom: .3rem;
     }
 
@@ -822,7 +866,7 @@
 
     .budget-table td { padding: .75rem 1.2rem; border-bottom: 1px solid var(--border); }
     .budget-table td:last-child { text-align: right; font-weight: 600; color: var(--red); }
-    .budget-table tr:nth-child(even) td { background: #F9F5EE; }
+    .budget-table tr:nth-child(even) td { background: var(--row-alt); }
 
     .budget-table tfoot td { background: var(--dark); color: #fff; font-weight: 700; font-size: 1rem; }
     .budget-table tfoot td:last-child { color: var(--gold); font-size: 1.1rem; }
@@ -840,7 +884,7 @@
     }
 
     .tip-card:hover { transform: translateY(-3px); }
-    .tip-card h4 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: .5rem; }
+    .tip-card h4 { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: .5rem; }
     .tip-card p  { font-size: .87rem; color: var(--muted); line-height: 1.6; }
 
     /* ─── USJ DAY PLAN ─── */
@@ -879,7 +923,7 @@
     .u-label {
       font-size: .88rem;
       font-weight: 600;
-      color: var(--dark);
+      color: var(--heading);
       line-height: 1.35;
     }
 
@@ -992,6 +1036,8 @@
   </style>
 </head>
 <body>
+
+<button id="theme-toggle" aria-label="สลับธีม" title="สลับธีม Dark / Light">🌙</button>
 
 <!-- ─── HERO ─── -->
 <section class="hero" id="sec-hero">
@@ -1630,15 +1676,15 @@
   .wx-now-meta{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem;opacity:.92;border-top:1px solid rgba(255,255,255,.15);padding-top:.9rem;}
   .wx-now-meta b{font-weight:700;}
   .wx-feb{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;}
-  .wx-feb-title{font-weight:700;color:var(--dark);margin-bottom:1rem;}
+  .wx-feb-title{font-weight:700;color:var(--heading);margin-bottom:1rem;}
   .wx-feb-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
   .wx-stat{background:var(--cream);border-radius:12px;padding:.8rem;text-align:center;}
   .wx-stat-label{display:block;font-size:.78rem;color:var(--muted);}
   .wx-stat-val{display:block;font-size:1.4rem;font-weight:700;color:var(--red);font-family:'Playfair Display',serif;}
-  .wx-feb-note{margin-top:1rem;font-size:.88rem;line-height:1.6;color:var(--text);background:#FFF6E9;border-left:3px solid var(--gold);padding:.8rem .9rem;border-radius:8px;}
+  .wx-feb-note{margin-top:1rem;font-size:.88rem;line-height:1.6;color:var(--text);background:var(--surface-tint);border-left:3px solid var(--gold);padding:.8rem .9rem;border-radius:8px;}
   .wx-credit{text-align:center;font-size:.78rem;color:var(--muted);margin-top:1.2rem;}
 </style>
-<section id="sec-weather" style="background:#fff; padding:4rem 0;">
+<section id="sec-weather" style="background:var(--card); padding:4rem 0;">
   <div class="container">
     <p class="section-label">Weather</p>
     <h2 class="section-title">อากาศที่โอซาก้า 🌤️</h2>
@@ -1716,7 +1762,7 @@
 </div>
 
 <!-- ─── GALLERY ─── -->
-<section id="sec-gallery" style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+<section id="sec-gallery" style="background:var(--cream2); padding-top:4rem; padding-bottom:5rem;">
   <div class="container">
     <p class="section-label">Highlights</p>
     <h2 class="section-title">สถานที่น่าไป</h2>
@@ -1802,7 +1848,7 @@
 
 <!-- ─── MAP ─── -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<section id="sec-map" style="background:#fff; padding:4.5rem 0;">
+<section id="sec-map" style="background:var(--card); padding:4.5rem 0;">
   <div class="container">
     <p class="section-label">Map</p>
     <h2 class="section-title">แผนที่สถานที่ทั้งหมด 🗺️</h2>
@@ -2108,7 +2154,7 @@
 </div>
 
 <!-- ─── BUDGET ─── -->
-<section id="sec-budget" style="background:#F2EDE5; padding-top:4rem; padding-bottom:5rem;">
+<section id="sec-budget" style="background:var(--cream2); padding-top:4rem; padding-bottom:5rem;">
   <div class="container">
     <p class="section-label">Budget</p>
     <h2 class="section-title">ประมาณการค่าใช้จ่าย</h2>
@@ -2209,9 +2255,9 @@
 </section>
 
 <!-- ─── QR SHARE ─── -->
-<section id="sec-share" style="background:#F2EDE5; padding: 4rem 0;">
+<section id="sec-share" style="background:var(--cream2); padding: 4rem 0;">
   <div class="container">
-    <div style="display:flex; align-items:center; gap:2.5rem; background:#fff; border:1px solid var(--border); border-radius:24px; padding:2rem 2.5rem; flex-wrap:wrap; box-shadow:0 4px 24px rgba(0,0,0,.07);">
+    <div style="display:flex; align-items:center; gap:2.5rem; background:var(--card); border:1px solid var(--border); border-radius:24px; padding:2rem 2.5rem; flex-wrap:wrap; box-shadow:0 4px 24px rgba(0,0,0,.07);">
 
       <!-- QR Code -->
       <div style="flex-shrink:0; background:var(--cream); border-radius:16px; padding:.8rem; border:2px solid var(--border);">
@@ -2226,12 +2272,12 @@
       <!-- Info -->
       <div style="flex:1; min-width:220px;">
         <p class="section-label">Share</p>
-        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--dark); margin:.3rem 0 .8rem; line-height:1.2;">แชร์ให้เพื่อน<br/>Scan ได้เลย 📱</h2>
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--heading); margin:.3rem 0 .8rem; line-height:1.2;">แชร์ให้เพื่อน<br/>Scan ได้เลย 📱</h2>
         <p style="font-size:.88rem; color:var(--muted); margin-bottom:1.2rem; line-height:1.6;">ให้เพื่อน scan QR หรือกด Copy link ส่งได้เลย<br/>เปิดดูแผนทริปได้ทุกที่ทุกเวลา</p>
 
         <!-- URL row -->
         <div style="display:flex; align-items:center; gap:.6rem; background:var(--cream); border:1px solid var(--border); border-radius:10px; padding:.55rem .9rem; margin-bottom:.9rem; flex-wrap:wrap;">
-          <span style="font-size:.78rem; color:var(--dark); font-family:monospace; flex:1; word-break:break-all;" id="share-url">https://phakphumswork-tech.github.io/osaka-trip-2027</span>
+          <span style="font-size:.78rem; color:var(--heading); font-family:monospace; flex:1; word-break:break-all;" id="share-url">https://phakphumswork-tech.github.io/osaka-trip-2027</span>
           <button onclick="copyShareUrl()" id="copy-btn"
             style="flex-shrink:0; background:var(--dark); color:#fff; border:none; border-radius:8px; padding:.4rem .9rem; font-size:.75rem; cursor:pointer; font-family:'Noto Sans Thai',sans-serif; transition:background .2s;">
             📋 Copy
@@ -2485,7 +2531,7 @@
 
         #mtab {
           display:flex; position:fixed; left:0; right:0; bottom:0; z-index:9999;
-          background:rgba(255,255,255,.95); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+          background:var(--bar-bg); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
           border-top:1px solid var(--border); box-shadow:0 -2px 18px rgba(0,0,0,.08);
           padding-bottom:env(safe-area-inset-bottom,0px);
         }
@@ -2504,7 +2550,7 @@
         #fnav-menu {
           position:fixed; left:0; right:0; bottom:0; z-index:9999;
           flex-direction:column; align-items:stretch; gap:.4rem;
-          background:#fff; border-radius:20px 20px 0 0;
+          background:var(--card); border-radius:20px 20px 0 0;
           padding:1.5rem 1rem calc(1.2rem + 60px + env(safe-area-inset-bottom,0px));
           box-shadow:0 -10px 40px rgba(0,0,0,.3);
           opacity:1; pointer-events:none;
@@ -2643,6 +2689,24 @@
   if (window.caches) {
     caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
   }
+
+  /* ─── THEME TOGGLE (Dark / Light) ─── */
+  (function(){
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    function apply(t){
+      document.documentElement.setAttribute('data-theme', t);
+      // show the icon of the theme you'll switch TO
+      btn.textContent = t === 'dark' ? '☀️' : '🌙';
+      btn.title = t === 'dark' ? 'สลับเป็นโหมดสว่าง' : 'สลับเป็นโหมดมืด';
+    }
+    apply(document.documentElement.getAttribute('data-theme') || 'dark');
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('theme', next); } catch(e){}
+      apply(next);
+    });
+  })();
 </script>
 </body>
 </html>
