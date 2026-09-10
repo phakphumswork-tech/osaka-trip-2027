@@ -690,6 +690,18 @@
       cursor: default;
     }
 
+    .g-map-btn {
+      position: absolute; top: .6rem; right: .6rem; z-index: 3;
+      background: rgba(255,255,255,.92); color: #1a73e8;
+      font-size: .7rem; font-weight: 700; text-decoration: none;
+      padding: .28rem .6rem; border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.28);
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .15s, background .2s;
+    }
+    .g-map-btn:hover { background: #fff; transform: scale(1.05); }
+    .g-map-btn:active { transform: scale(.92); }
+
     .g-item.span-2 { grid-row: span 2; }
 
     .g-bg {
@@ -1906,14 +1918,39 @@
   ];
 
   SPOTS.forEach(s => {
+    const gmap = `https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}`;
     L.marker([s.lat, s.lng], { icon: pin(s.color) })
       .addTo(map)
-      .bindPopup(`<strong style="font-size:.9rem;">${s.name}</strong><br/><span style="font-size:.78rem;color:#555;">${s.desc}</span>`, { maxWidth:200 });
+      .bindPopup(
+        `<strong style="font-size:.9rem;">${s.name}</strong><br/>` +
+        `<span style="font-size:.78rem;color:#555;">${s.desc}</span><br/>` +
+        `<a href="${gmap}" target="_blank" rel="noopener" style="display:inline-block;margin-top:.4rem;font-size:.78rem;font-weight:600;color:#1a73e8;text-decoration:none;">🗺️ เปิดใน Google Maps ↗</a>`,
+        { maxWidth:220 }
+      );
   });
 
   // Fit all markers
   const bounds = L.latLngBounds(SPOTS.map(s => [s.lat, s.lng]));
   map.fitBounds(bounds, { padding:[40,40] });
+})();
+
+/* ─── Gallery cards → Google Maps ─── */
+(function(){
+  document.querySelectorAll('#sec-gallery .g-item').forEach(item => {
+    const jp = item.querySelector('.g-jp')?.textContent.trim();
+    const en = item.querySelector('.g-name')?.textContent.trim();
+    const q  = jp || en;
+    if (!q) return;
+    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+    item.style.cursor = 'pointer';
+    item.addEventListener('click', () => window.open(url, '_blank', 'noopener'));
+    const btn = document.createElement('a');
+    btn.href = url; btn.target = '_blank'; btn.rel = 'noopener';
+    btn.className = 'g-map-btn';
+    btn.textContent = '📍 Maps';
+    btn.addEventListener('click', (e) => e.stopPropagation());
+    item.appendChild(btn);
+  });
 })();
 </script>
 
