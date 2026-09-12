@@ -899,6 +899,30 @@
     .tip-card h4 { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: .5rem; }
     .tip-card p  { font-size: .87rem; color: var(--muted); line-height: 1.6; }
 
+    /* ─── FOOD ─── */
+    .food-zone { margin-top: 2.2rem; }
+    .food-zone:first-of-type { margin-top: .5rem; }
+    .food-zone-label {
+      font-weight: 700; color: var(--heading); font-size: 1.05rem;
+      margin-bottom: .9rem; display: flex; align-items: center; gap: .5rem;
+    }
+    .food-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); gap: 1rem; }
+    .food-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .35rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .food-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    .food-name { font-weight: 700; color: var(--heading); font-size: 1rem; }
+    .food-jp { font-family: 'Noto Serif JP', serif; font-size: .76rem; color: var(--muted); }
+    .food-desc { font-size: .85rem; color: var(--text); line-height: 1.5; }
+    .food-map {
+      margin-top: .4rem; align-self: flex-start; display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .8rem; font-weight: 600; color: #1a73e8; text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .food-map:hover { text-decoration: underline; }
+
     /* ─── USJ DAY PLAN ─── */
     .usj-plan { margin-top: 1.2rem; }
 
@@ -2192,6 +2216,98 @@
   </div>
 </div>
 
+<!-- ─── FOOD ─── -->
+<section id="sec-food">
+  <div class="container">
+    <p class="section-label">Food</p>
+    <h2 class="section-title">ร้านอาหารแนะนำ 🍜</h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted); font-size:.95rem; margin-top:-1rem; margin-bottom:1.5rem;">แยกตามโซน · แตะ “📍 Maps” เพื่อเปิดใน Google Maps</p>
+
+    <!-- Dotonbori / Namba -->
+    <div class="food-zone">
+      <div class="food-zone-label">🦀 Dotonbori · Namba</div>
+      <div class="food-grid">
+        <div class="food-card">
+          <span class="food-name">Kani Doraku</span><span class="food-jp">かに道楽 道頓堀本店</span>
+          <span class="food-desc">ปูยักษ์ขยับได้หน้าร้าน · คอร์สปูเต็มรูปแบบ</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%81%AB%E9%81%93%E6%A5%BD%20%E9%81%93%E9%A0%93%E5%A0%80%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+        <div class="food-card">
+          <span class="food-name">Mizuno</span><span class="food-jp">美津の</span>
+          <span class="food-desc">โอโคโนมิยากิ ระดับ Michelin Bib Gourmand · คิวยาว</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E7%BE%8E%E6%B4%A5%E3%81%AE%20%E9%81%93%E9%A0%93%E5%A0%80" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+        <div class="food-card">
+          <span class="food-name">Kukuru</span><span class="food-jp">たこ家道頓堀 くくる</span>
+          <span class="food-desc">ทาโกยากิเจ้าดัง ตัวหมึกใหญ่เต็มคำ</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E3%81%9F%E3%81%93%E5%AE%B6%E9%81%93%E9%A0%93%E5%A0%80%E3%81%8F%E3%81%8F%E3%82%8B%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+        <div class="food-card">
+          <span class="food-name">Kinryu Ramen</span><span class="food-jp">金龍ラーメン 道頓堀</span>
+          <span class="food-desc">ราเมงมังกร กินยืน เปิดดึก บรรยากาศโลคอล</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E9%87%91%E9%BE%8D%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%20%E9%81%93%E9%A0%93%E5%A0%80" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+        <div class="food-card">
+          <span class="food-name">Ichiran</span><span class="food-jp">一蘭 道頓堀店</span>
+          <span class="food-desc">ราเมงทงคตสึ นั่งคอกเดี่ยว ปรับความเข้มได้</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E8%98%AD%20%E9%81%93%E9%A0%93%E5%A0%80" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kuromon -->
+    <div class="food-zone">
+      <div class="food-zone-label">🐟 Kuromon Market (Day 4 กลางวัน)</div>
+      <div class="food-grid">
+        <div class="food-card">
+          <span class="food-name">Kuromon Ichiba Market</span><span class="food-jp">黒門市場</span>
+          <span class="food-desc">ตลาดสด กินเดินได้ · หอยเชลล์ย่าง · อูนิ · ปู · วากิวเสียบไม้ · ซาชิมิ</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E9%BB%92%E9%96%80%E5%B8%82%E5%A0%B4" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shinsekai -->
+    <div class="food-zone">
+      <div class="food-zone-label">🍢 Shinsekai</div>
+      <div class="food-grid">
+        <div class="food-card">
+          <span class="food-name">Kushikatsu Daruma</span><span class="food-jp">串かつだるま 新世界総本店</span>
+          <span class="food-desc">ต้นตำรับคุชิคัตสึ (ของทอดเสียบไม้) · กฎห้ามจุ่มซอสซ้ำ!</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E4%B8%B2%E3%81%8B%E3%81%A4%E3%81%A0%E3%82%8B%E3%81%BE%20%E6%96%B0%E4%B8%96%E7%95%8C%E7%B7%8F%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Umeda -->
+    <div class="food-zone">
+      <div class="food-zone-label">🌃 Umeda (Day 4 ค่ำ · ใต้ตึก Umeda Sky)</div>
+      <div class="food-grid">
+        <div class="food-card">
+          <span class="food-name">Takimi Koji</span><span class="food-jp">滝見小路</span>
+          <span class="food-desc">ตรอกอาหารย้อนยุคสมัยโชวะ ชั้นใต้ดินตึก Umeda Sky · ชมวิวเสร็จลงมากินได้เลย</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=%E6%BB%9D%E8%A6%8B%E5%B0%8F%E8%B7%AF%20%E6%A2%85%E7%94%B0" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ทั่วเมือง -->
+    <div class="food-zone">
+      <div class="food-zone-label">⭐ ของต้องลอง (ทั่วเมือง)</div>
+      <div class="food-grid">
+        <div class="food-card">
+          <span class="food-name">551 Horai</span><span class="food-jp">551蓬莱 本店</span>
+          <span class="food-desc">ซาลาเปาหมู (บูตะมัง) ร้อนๆ · ของกิน/ของฝากยอดฮิต มีตามสถานีใหญ่</span>
+          <a class="food-map" href="https://www.google.com/maps/search/?api=1&query=551%E8%93%AC%E8%8E%B1%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📍 Maps ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:1.6rem; font-size:.82rem; color:var(--muted);">💡 หน้าหนาว ก.พ. แนะนำเมนูร้อน: ราเมง · โอเด้ง · ชาบู/สุกี้ · วากิวย่าง · ร้านดังคิวยาว เช็กเวลาเปิดใน Maps ก่อนไปนะ</p>
+  </div>
+</section>
+
 <!-- ─── BUDGET ─── -->
 <section id="sec-budget" style="background:var(--cream2); padding-top:4rem; padding-bottom:5rem;">
   <div class="container">
@@ -2505,6 +2621,7 @@
       { id:'sec-gallery',   icon:'🗼', label:'สถานที่น่าไป' },
       { id:'sec-map',       icon:'🗺️', label:'แผนที่' },
       { id:'sec-itinerary', icon:'🗓️', label:'แผนรายวัน' },
+      { id:'sec-food',      icon:'🍜', label:'ร้านอาหาร' },
       { id:'sec-budget',    icon:'💰', label:'งบประมาณ' },
       { id:'sec-tips',      icon:'💡', label:'สิ่งที่ต้องเตรียม' },
       { id:'sec-share',     icon:'📱', label:'แชร์เว็บ' },
